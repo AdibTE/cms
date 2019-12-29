@@ -41,7 +41,9 @@ router.post('/create', (req, res) => {
     newPost.save().then(savedPost => {
         console.log('[ USER SAVED ] id: ' + savedPost._id)
         res.redirect('/admin/posts')
-    }).catch(err => { console.log(err.message) })
+    }).catch(err => { 
+        res.render('admin/posts/create',{alerts:{e:true}})
+     })
 })
 
 
@@ -55,8 +57,9 @@ router.get('/edit/:id', (req, res) => {
         })
 })
 
-// Edit POST route
-router.post('/edit/:id', (req, res) => {
+
+// Edit PUT route
+router.put('/edit/:id',(req,res)=>{
     let allowComments = true;
     req.body.allowComments == undefined ? allowComments = false : allowComments = true;
     Post.findOneAndUpdate({ _id: req.params.id }, {
@@ -66,10 +69,30 @@ router.post('/edit/:id', (req, res) => {
             body: req.body.body,
             allowComments: allowComments
         }
-    }).then(post => {
-        res.redirect('/admin/posts')
-        // res.render('admin/posts/edit', { post: post[0], edited: true })
+    }).then(()=>{
+        Post.find({ _id: req.params.id })
+        .then(post => {
+            res.render('admin/posts/edit', { post: post[0] , alerts:{s:true,w:false,e:false}})
+        }).catch(err => {
+            res.send(err.message);
+        })
     }).catch(err => res.send(err.message))
+});
+
+
+// DELETE route
+router.delete('/:id',(req,res)=>{
+    Post.findOne({_id : req.params.id}).then(post=>{
+        post.remove();
+    }).then(()=>{
+        Post.find({})
+        .then(posts => {
+            res.render('admin/posts/index', { posts: posts,alerts:{s:true,w:false,e:false} })
+        })
+        .catch(err => {
+            res.send(err.message);
+        });
+    }).catch(err=>{res.send(err)})
 })
 
 module.exports = router;

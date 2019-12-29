@@ -12,15 +12,15 @@
     </ol>
     <div class="row">
         <div class="col-12">
-<h1>Create Post</h1>
+<h1>Edit Post</h1>
 
-    {{#if edited}}
+    {{#if alerts.s}}
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         Post edited successfully
     </div>
     {{/if}}
-<form action="/admin/posts/edit/{{post._id}}" method="POST">
+<form action="/admin/posts/edit/{{post._id}}?_method=PUT" method="POST">
     {{!-- <input type="hidden" name="_method" value="put" /> --}}
     <div class="form-group">
 

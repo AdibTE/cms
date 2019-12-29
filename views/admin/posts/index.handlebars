@@ -10,6 +10,12 @@
     <div class="row">
         <div class="col-12">
             <h1>Posts</h1>
+            {{#if alerts.s}}
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Post Deleted
+            </div>
+            {{/if}}
             <table class="table table-bordered table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>
@@ -27,7 +33,17 @@
                         <td>{{title}}</td>
                         <td>{{status}}</td>
                         <td>{{allowComments}}</td>
-                        <td><a href="/admin/posts/edit/{{id}}"><i class="fa fa-edit"></i></a></td>
+                        <td>
+                            <a href="/admin/posts/edit/{{id}}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <form action="/admin/posts/{{id}}?_method=DELETE" method="POST" style="all: unset;">
+                                <button type="submit" style="all: unset;cursor:pointer">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </button>
+                            </form>
+
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>

@@ -13,7 +13,13 @@
     <div class="row">
         <div class="col-12">
 <h1>Create Post</h1>
-
+{{#if alerts.e}}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Creating Post Faild.
+        <small> Please complete all fields</small>
+    </div>
+{{/if}}
 <form action="/admin/posts/create" method="POST">
 
     <div class="form-group">
