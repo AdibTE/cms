@@ -67,7 +67,7 @@ router.post('/edit/:id', (req, res) => {
             allowComments: allowComments
         }
     }).then(post => {
-        res.redirect('/admin/posts/edit/' + req.params.id)
+        // res.redirect('/admin/posts/edit/' + req.params.id)
     }).catch(err => res.send(err.message))
 })
 
