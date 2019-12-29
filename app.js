@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 // Mongoose Promise
 mongoose.Promise = global.Promise;
 
+// Database Connection
 mongoose.connect('mongodb://localhost:27017/CMS',{ useUnifiedTopology: true, useNewUrlParser: true ,useFindAndModify: false,useCreateIndex:true}).then(db=>{
     console.log('[ DB CONNECTED ]')
 }).catch(err=>{

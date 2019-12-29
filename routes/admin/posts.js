@@ -49,7 +49,7 @@ router.post('/create', (req, res) => {
 router.get('/edit/:id', (req, res) => {
     Post.find({ _id: req.params.id })
         .then(post => {
-            res.render('admin/posts/edit', { post: post[0], edited: false })
+            res.render('admin/posts/edit', { post: post[0] })
         }).catch(err => {
             res.send(err.message);
         })
@@ -67,7 +67,8 @@ router.post('/edit/:id', (req, res) => {
             allowComments: allowComments
         }
     }).then(post => {
-        // res.redirect('/admin/posts/edit/' + req.params.id)
+        res.redirect('/admin/posts')
+        // res.render('admin/posts/edit', { post: post[0], edited: true })
     }).catch(err => res.send(err.message))
 })
 
