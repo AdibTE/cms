@@ -1,0 +1,60 @@
+
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+        <a href="/admin">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+        <a href="/admin/posts">Posts</a>
+        </li>
+        <li class="breadcrumb-item active">Create Post</li>
+    </ol>
+    <div class="row">
+        <div class="col-12">
+<h1>Create Post</h1>
+
+    {{#if edited}}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Post edited successfully
+    </div>
+    {{/if}}
+<form action="/admin/posts/edit/{{post._id}}" method="POST">
+    {{!-- <input type="hidden" name="_method" value="put" /> --}}
+    <div class="form-group">
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select name="status" id="status" class="form-control">
+        {{#select post.status}}
+                <option value="public">Public</option>
+                <option value="Private">Private</option>
+                <option value="Draft">Draft</option>
+        {{/select}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input value="{{post.title}}" name="title" type="text" class="form-control" id="title" placeholder="Enter Title"/>
+        </div>
+        <div class="form-group">
+            <label for="body">Body</label>
+            <textarea placeholder="Enter your post..." class="form-control" name="body" id="body" rows="5">{{post.body}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="AllowComments">
+                Allow Comments
+                <input {{#if post.allowComments}} checked {{/if}} name="allowComments" type="checkbox" id="AllowComments">
+            </label>
+
+        </div>
+        <input type="submit" value="Edit" class="btn btn-primary btn-block">
+
+    </div>
+
+</form>
+        </div>
+    </div>
+
+</div>
