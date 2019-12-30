@@ -10,15 +10,15 @@ router.all('/*', (req, res, next) => {
 })
 
 
-// Index route
+// Index GET route
 router.get('/', (req, res) => {
-    Post.find({})
-        .then(posts => {
-            res.render('admin/posts/index', { posts: posts })
-        })
-        .catch(err => {
-            res.send(err.message);
-        });
+    Post.find({}).sort({postId:0})
+    .then(posts => {
+        res.render('admin/posts/index', { posts: posts })
+    })
+    .catch(err => {
+        res.send(err.message);
+    });
 })
 
 
