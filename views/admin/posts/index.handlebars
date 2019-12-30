@@ -10,12 +10,6 @@
     <div class="row">
         <div class="col-12">
             <h1>Posts</h1>
-            {{#if alerts.s}}
-            <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Post Deleted
-            </div>
-            {{/if}}
             <table class="table table-bordered table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>
@@ -29,7 +23,7 @@
                 <tbody>
                     {{#each posts}}
                     <tr>
-                        <td>{{id}}</td>
+                        <td>{{postId}}</td>
                         <td>{{title}}</td>
                         <td>{{status}}</td>
                         <td>{{allowComments}}</td>
@@ -51,3 +45,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    {{#if postDelete}}
+        swal("Done!", "Post deleted successfuly.", "success")
+    {{/if}}
+</script>

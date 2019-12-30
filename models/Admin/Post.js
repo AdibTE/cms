@@ -17,6 +17,9 @@ const postSchema = new Schema({
   allowComments: {
     type: Boolean,
     default: false
+  },
+  postId: {
+    type: Number,
   }
 });
 

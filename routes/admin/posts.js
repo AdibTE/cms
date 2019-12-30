@@ -32,18 +32,22 @@ router.get('/create', (req, res) => {
 router.post('/create', (req, res) => {
     let allowComments = true;
     req.body.allowComments == undefined ? allowComments = false : allowComments = true;
-    const newPost = new Post({
-        status: req.body.status,
-        title: req.body.title,
-        body: req.body.body,
-        allowComments: allowComments,
+    Post.find().sort({ postId: -1 }).limit(1).then((sr)=>{
+        sr[0] != undefined ? global.postId = sr[0].postId : global.postId = 0;
+        const newPost = new Post({
+            status: req.body.status,
+            title: req.body.title,
+            body: req.body.body,
+            allowComments: allowComments,
+            postId : ++global.postId
+        })
+        newPost.save().then(savedPost => {
+            console.log('[ USER SAVED ] id: ' + savedPost._id)
+            res.render('admin/posts/create',{postCreate:true})
+        }).catch(err => { 
+            res.render('admin/posts/create',{error:true})
+        })
     })
-    newPost.save().then(savedPost => {
-        console.log('[ USER SAVED ] id: ' + savedPost._id)
-        res.redirect('/admin/posts')
-    }).catch(err => { 
-        res.render('admin/posts/create',{alerts:{e:true}})
-     })
 })
 
 
@@ -72,7 +76,7 @@ router.put('/edit/:id',(req,res)=>{
     }).then(()=>{
         Post.find({ _id: req.params.id })
         .then(post => {
-            res.render('admin/posts/edit', { post: post[0] , alerts:{s:true,w:false,e:false}})
+            res.render('admin/posts/edit', { post: post[0] , postEdit:true})
         }).catch(err => {
             res.send(err.message);
         })
@@ -87,7 +91,7 @@ router.delete('/:id',(req,res)=>{
     }).then(()=>{
         Post.find({})
         .then(posts => {
-            res.render('admin/posts/index', { posts: posts,alerts:{s:true,w:false,e:false} })
+            res.render('admin/posts/index', { posts: posts,postDelete:true })
         })
         .catch(err => {
             res.send(err.message);

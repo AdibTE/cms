@@ -14,12 +14,6 @@
         <div class="col-12">
 <h1>Edit Post</h1>
 
-    {{#if alerts.s}}
-    <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        Post edited successfully
-    </div>
-    {{/if}}
 <form action="/admin/posts/edit/{{post._id}}?_method=PUT" method="POST">
     {{!-- <input type="hidden" name="_method" value="put" /> --}}
     <div class="form-group">
@@ -58,3 +52,9 @@
     </div>
 
 </div>
+
+<script>
+    {{#if postEdit}}
+    swal("Done!", "Post Edited successfuly.", "success")
+    {{/if}}
+</script>
