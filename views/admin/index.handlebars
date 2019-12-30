@@ -1,41 +1,54 @@
-
 <div class="container-fluid">
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active">
-        <a href="/admin">Dashboard</a>
-        </li>
-    </ol>
-    <div class="row">
-        <div class="col-12">
-            <h1>Welcome to your CMS</h1>
-            <form action="/admin/gen_fake_post" method="POST">
-                <div class="form-group row">
-                    <div class="col-md-8">
-                        <input required name="amount" type="number" class="form-control" placeholder="enter number of posts to inject">
-                    </div>
-                    <div class="col-md-4">
-                          <button class="btn btn-block btn-secondary">Create</button>
-                    </div>
-                </div>
-            </form>
-            <form action="/admin/removeAllPost" method="POST">
-                <div class="form-group row">
-                    <div class="col-md-2">
-                          <button class="btn btn-block btn-danger">Delete</button>
-                    </div>
-                </div>
-            </form>
+  <!-- Breadcrumbs-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a href="/admin">
+        Dashboard
+      </a>
+    </li>
+  </ol>
+  <div class="row">
+    <div class="col-12">
+      <h1>
+        Welcome to your CMS
+      </h1>
+      <form action="/admin/gen_fake_post" method="POST">
+        <div class="form-group row">
+          <div class="col-md-8">
+            <input
+              required
+              name="amount"
+              type="number"
+              class="form-control"
+              placeholder="enter number of posts to inject"
+            />
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-block btn-secondary">
+              Create
+            </button>
+          </div>
         </div>
+      </form>
+      <form action="/admin/removeAllPost" method="POST">
+        <div class="form-group row">
+          <div class="col-md-2">
+            <button class="btn btn-block btn-danger">
+              Delete
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <script>
-    {{#if added}}
+  {{#if added}}
     swal("Done!", "Posts Added succesfuly", "success")
-    {{/if}}
+  {{/if}}
 
-    {{#if deleted}}
+  {{#if deleted}}
     swal("Done!", "Posts Deleted succesfuly", "success")
-    {{/if}}
+  {{/if}}
 </script>

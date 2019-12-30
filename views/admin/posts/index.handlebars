@@ -1,53 +1,79 @@
-
 <div class="container-fluid">
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-        <a href="/admin">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active">Posts</li>
-    </ol>
-    <div class="row">
-        <div class="col-12">
-            <h1>Posts</h1>
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Id</th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Allow Comments</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each posts}}
-                    <tr>
-                        <td>{{postId}}</td>
-                        <td>{{title}}</td>
-                        <td>{{status}}</td>
-                        <td>{{allowComments}}</td>
-                        <td>
-                            <a href="/admin/posts/edit/{{id}}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <form action="/admin/posts/{{id}}?_method=DELETE" method="POST" style="all: unset;">
-                                <button type="submit" style="all: unset;cursor:pointer">
-                                    <i class="fa fa-trash text-danger"></i>
-                                </button>
-                            </form>
-
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+  <!-- Breadcrumbs-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="/admin">
+        Dashboard
+      </a>
+    </li>
+    <li class="breadcrumb-item active">
+      Posts
+    </li>
+  </ol>
+  <div class="row">
+    <div class="col-12">
+      <h1>
+        Posts
+      </h1>
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>
+              Id
+            </th>
+            <th>
+              Title
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              Allow Comments
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each posts}}
+            <tr>
+              <td>
+                {{postId}}
+              </td>
+              <td>
+                {{title}}
+              </td>
+              <td>
+                {{status}}
+              </td>
+              <td>
+                {{allowComments}}
+              </td>
+              <td>
+                <a href="/admin/posts/edit/{{id}}">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <form
+                  action="/admin/posts/{{id}}?_method=DELETE"
+                  method="POST"
+                  style="all: unset;"
+                >
+                  <button type="submit" style="all: unset;cursor:pointer">
+                    <i class="fa fa-trash text-danger"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
 <script>
-    {{#if postDelete}}
-        swal("Done!", "Post deleted successfuly.", "success")
-    {{/if}}
+  {{#if postDelete}}
+    swal("Done!", "Post deleted successfuly.", "success")
+  {{/if}}
 </script>
