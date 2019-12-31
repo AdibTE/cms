@@ -20,7 +20,7 @@
       <h1>
         Edit Post
       </h1>
-      <form action="/admin/posts/create" method="POST">
+      <form action="/admin/posts/edit/{{post._id}}?_method=PUT" method="POST">
         <div class="form-group">
           <div class="form-group">
             <label for="status">
@@ -79,7 +79,7 @@
   {{#if error}}
     swal("Oops!", "Creating Post Faild. Please complete all fields.", "error")
   {{/if}}
-  {{#if postCreate}}
+  {{#if postEdit}}
     swal("Done!", "Post Added successfuly.", "success").then(()=>{
             window.location.href ='/admin/posts';
         })

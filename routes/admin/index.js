@@ -20,11 +20,13 @@ router.post('/gen_fake_post', (req, res) => {
         sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
         for (let i = 0; i < req.body.amount; i++) {
             let post = new Post();
-            post.title = faker.lorem.sentences(2);
+            post.title = faker.name.title();
+            post.image = faker.image.image();
             post.body = faker.lorem.paragraph(20);
             post.allowComments = true;
             post.status = 'public';
             post.postId = ++global.postId;
+            post.date = Date.now();
             post.save();
         }
         res.render('admin', { added: true });
