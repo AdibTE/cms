@@ -29,39 +29,49 @@ router.get('/create', (req, res) => {
 
 // Create POST route
 router.post('/create', (req, res) => {
-    let filename = 'default.jpg';
+    let errors = [];
+    if (!req.body.title) {
+        errors.push({ message: 'Title is required' });
+    }
+    if (!req.body.body) {
+        errors.push({ message: 'Body is required' });
+    }
+    if (errors.length > 0) {
+        res.render('admin/posts/create', { errors: errors });
+    } else {
+        let filename = 'default.jpg';
 
-    if (!isEmpty(req.files)) {
-        let file = req.files.file;
-        filename = Date.now() + '-' + file.name;
-        file.mv('./public/uploads/' + filename, (err) => {
-            if (err) throw err;
+        if (isEmpty(req.files)) {
+            let file = req.files.file;
+            filename = Date.now() + '-' + file.name;
+            file.mv('./public/uploads/' + filename, (err) => {
+                if (err) throw err;
+            });
+        }
+        let allowComments = true;
+        req.body.allowComments == undefined ? (allowComments = false) : (allowComments = true);
+        Post.find().sort({ postId: -1 }).limit(1).then((sr) => {
+            sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
+            const newPost = new Post({
+                status: req.body.status,
+                title: req.body.title,
+                body: req.body.body,
+                allowComments: allowComments,
+                postId: ++global.postId,
+                date: Date.now(),
+                file: filename
+            });
+            newPost
+                .save()
+                .then((savedPost) => {
+                    console.log('[ USER SAVED ] id: ' + savedPost._id);
+                    res.render('admin/posts/create', { postCreate: true });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         });
     }
-
-    let allowComments = true;
-    req.body.allowComments == undefined ? (allowComments = false) : (allowComments = true);
-    Post.find().sort({ postId: -1 }).limit(1).then((sr) => {
-        sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
-        const newPost = new Post({
-            status: req.body.status,
-            title: req.body.title,
-            body: req.body.body,
-            allowComments: allowComments,
-            postId: ++global.postId,
-            date: Date.now(),
-            file: filename
-        });
-        newPost
-            .save()
-            .then((savedPost) => {
-                console.log('[ USER SAVED ] id: ' + savedPost._id);
-                res.render('admin/posts/create', { postCreate: true });
-            })
-            .catch((err) => {
-                res.render('admin/posts/create', { error: true });
-            });
-    });
 });
 
 // Edit GET route
@@ -77,20 +87,34 @@ router.get('/edit/:id', (req, res) => {
 
 // Edit PUT route
 router.put('/edit/:id', (req, res) => {
-    let allowComments = true;
-    req.body.allowComments == undefined ? (allowComments = false) : (allowComments = true);
-    Post.findOneAndUpdate({ _id: req.params.id }, {
-            $set: {
-                status: req.body.status,
-                title: req.body.title,
-                body: req.body.body,
-                allowComments: allowComments
+    Post.findOne({ _id: req.params.id })
+        .then((post) => {
+            req.body.allowComments == undefined ? (allowComments = false) : (allowComments = true);
+            post.status = req.body.status;
+            post.title = req.body.title;
+            post.body = req.body.body;
+            post.allowComments = allowComments;
+
+            let filename = 'default.jpg';
+
+            console.log(req.files);
+
+            if (!isEmpty(req.files)) {
+                post.file = filename;
+            } else {
+                console.log('hi');
+                let file = req.files.file;
+                filename = Date.now() + '-' + file.name;
+                post.file = filename;
+                file.mv('./public/uploads/' + filename, (err) => {
+                    if (err) throw err;
+                });
             }
-        })
-        .then(() => {
-            Post.find({ _id: req.params.id })
-                .then((post) => {
-                    res.render('admin/posts/edit', { post: post[0], postEdit: true });
+
+            post
+                .save()
+                .then((uPost) => {
+                    res.render(`admin/posts/edit`, { post: post[0], postEdit: true });
                 })
                 .catch((err) => {
                     res.send(err.message);

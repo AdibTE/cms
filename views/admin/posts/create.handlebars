@@ -20,6 +20,13 @@
       <h1>
         Create Post
       </h1>
+      {{#if errors}}
+        {{#each errors}}
+          <div class="alert alert-danger">
+            {{message}}
+          </div>
+        {{/each}}
+      {{/if}}
       <form
         action="/admin/posts/create"
         method="POST"
@@ -47,7 +54,6 @@
               Title
             </label>
             <input
-              required
               name="title"
               type="text"
               class="form-control"
@@ -92,9 +98,6 @@
 </div>
 
 <script>
-  {{#if error}}
-    swal("Oops!", "Creating Post Faild. Please complete all fields.", "error")
-  {{/if}}
   {{#if postCreate}}
     swal("Done!", "Post Added successfuly.", "success").then(() => {
         window.location.href = '/admin/posts';

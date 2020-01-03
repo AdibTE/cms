@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const upload = require('express-fileupload');
+const session = require('express-session');
 
 // Mongoose Promise
 mongoose.Promise = global.Promise;
@@ -42,6 +43,22 @@ app.use(bodyParser.json());
 
 // Method-OverRide
 app.use(methodOverride('_method'));
+
+// Session
+app.use(
+    session({
+        secret: 'AdibTE',
+        resave: true,
+        saveUninitialized: true
+            // cookie: { secure: true }
+    })
+);
+
+// Local variables using middlewares
+app.use((req, res, next) => {
+    // res.locals.success_message = req.flash('success_message');
+    next();
+});
 
 // Load routes
 const home = require('./routes/home/index');
