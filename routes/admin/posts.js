@@ -13,7 +13,8 @@ router.all('/*', (req, res, next) => {
 // Index GET route
 router.get('/', (req, res) => {
     Post.find({})
-        .sort({ postId: 0 })
+        .sort({ date: -1 })
+        .limit(10)
         .then((posts) => {
             res.render('admin/posts/index', { posts: posts });
         })
@@ -93,6 +94,7 @@ router.put('/edit/:id', (req, res) => {
             post.title = req.body.title;
             post.body = req.body.body;
             post.allowComments = allowComments;
+            post.date = Date.now();
 
             let filename = 'default.jpg';
             if (req.files) {
