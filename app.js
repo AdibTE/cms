@@ -30,8 +30,8 @@ mongoose
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set view engine
-const { select } = require('./helpers/handlebars-helpers');
-app.engine('handlebars', handlebars({ defaultLayout: 'home', helpers: { select: select } }));
+const { select, genTime } = require('./helpers/handlebars-helpers');
+app.engine('handlebars', handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime } }));
 app.set('view engine', 'handlebars');
 
 // Upload middleware

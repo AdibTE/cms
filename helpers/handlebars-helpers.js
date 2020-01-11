@@ -1,9 +1,10 @@
+const moment = require('moment');
+
 module.exports = {
-
-    select: (selected , options)=>{
-        
-        return options.fn(this).replace(new RegExp('value=\"'+ selected + '\"'), '$&selected="selected"')
-
-    } 
-
-}
+    select: (selected, options) => {
+        return options.fn(this).replace(new RegExp('value="' + selected + '"'), '$&selected="selected"');
+    },
+    genTime: function(date, format) {
+        return moment(date).format(format);
+    }
+};
