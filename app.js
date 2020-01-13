@@ -7,13 +7,30 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const upload = require('express-fileupload');
 const session = require('express-session');
+// const MongoClient = require('mongodb').MongoClient;
 
 // Mongoose Promise
 mongoose.Promise = global.Promise;
 
+// Database configs
+var config = {
+    mongo: {
+        hostString: '9a.mongo.evennode.com:27017,9b.mongo.evennode.com:27017/7326512cb1952073d6d9cc37635e5dcf',
+        user: '7326512cb1952073d6d9cc37635e5dcf',
+        db: '7326512cb1952073d6d9cc37635e5dcf',
+        mongoPassword: 'TEDB10111'
+    }
+};
+// var config = {
+//     mongo: {
+//         hostString: 'CMS',
+//         user: 'localhost:27017',
+//     }
+// };
+
 // Database Connection
 mongoose
-    .connect('mongodb://localhost:27017/CMS', {
+    .connect('mongodb://' + config.mongo.user + ':' + config.mongo.mongoPassword + '@' + config.mongo.hostString, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useFindAndModify: false,

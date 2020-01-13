@@ -98,7 +98,6 @@ router.put('/edit/:id', (req, res) => {
 
             let filename = 'default.jpg';
             if (req.files) {
-                console.log('hi');
                 let file = req.files.file;
                 filename = Date.now() + '-' + file.name;
                 file.mv('./public/uploads/' + filename, (err) => {

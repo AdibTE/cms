@@ -76,8 +76,9 @@
               id="body"
               rows="5"
             >{{post.body}}</textarea> --}}
-            <div id="froala-editor">
-            </div>
+            <textarea name="body" id="froala-editor">
+              {{post.body}}
+            </textarea>
           </div>
           <div class="form-group">
             <label for="AllowComments">
@@ -102,11 +103,4 @@
         })
   {{/if}}
 
-  $(function(){
-    var template = document.createElement('template');
-    template.innerHTML = '{{post.body}}';
-    console.log(template)
-    document.querySelector('.fr-view').innerHTML = template.content.childNodes[0].data
-    $('.fr-view').trigger('mousedown');
-  })
 </script>
