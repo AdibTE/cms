@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const upload = require('express-fileupload');
-const session = require('express-session');
+// const session = require('express-session');
 // const MongoClient = require('mongodb').MongoClient;
 
 // Mongoose Promise
@@ -21,13 +21,8 @@ var config = {
         mongoPassword: 'TEDB10111'
     }
 };
-// var config = {
-//     mongo: {
-//         hostString: 'CMS',
-//         user: 'localhost:27017',
-//     }
-// };
 
+// mongodb://localhost:27017 for local DB
 // Database Connection
 mongoose
     .connect('mongodb://' + config.mongo.user + ':' + config.mongo.mongoPassword + '@' + config.mongo.hostString, {
@@ -61,15 +56,15 @@ app.use(bodyParser.json());
 // Method-OverRide
 app.use(methodOverride('_method'));
 
-// Session
-app.use(
-    session({
-        secret: 'AdibTE',
-        resave: true,
-        saveUninitialized: true
-            // cookie: { secure: true }
-    })
-);
+// // Session
+// app.use(
+//     session({
+//         secret: 'AdibTE',
+//         resave: true,
+//         saveUninitialized: true
+//             // cookie: { secure: true }
+//     })
+// );
 
 // Local variables using middlewares
 app.use((req, res, next) => {
@@ -94,6 +89,7 @@ app.get('*', function(req, res) {
 });
 
 // Listen port
-app.listen(10, () => {
-    console.log('[ LISTENING ON PORT 10 ]');
+let port = process.env.PORT || 10;
+app.listen(port, () => {
+    console.log(`[ LISTENING ON PORT ${port} ]`);
 });
