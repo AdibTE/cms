@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Admin/Post');
+const Category = require('../../models/Admin/Category');
 const { isEmpty, uploadDir } = require('../../helpers/uploadHelper');
 const fs = require('fs');
 
@@ -15,6 +16,7 @@ router.get('/', (req, res) => {
     Post.find({})
         .sort({ date: -1 })
         .limit(10)
+        .populate('category')
         .then((posts) => {
             res.render('admin/posts/index', { posts: posts });
         })
@@ -25,7 +27,9 @@ router.get('/', (req, res) => {
 
 // Create GET route
 router.get('/create', (req, res) => {
-    res.render('admin/posts/create');
+    Category.find({}).then((cat) => {
+        res.render('admin/posts/create', { cat: cat });
+    });
 });
 
 // Create POST route
@@ -59,7 +63,8 @@ router.post('/create', (req, res) => {
                 allowComments: allowComments,
                 postId: ++global.postId,
                 date: Date.now(),
-                file: filename
+                file: filename,
+                category: req.body.category
             });
             newPost
                 .save()
@@ -76,9 +81,12 @@ router.post('/create', (req, res) => {
 
 // Edit GET route
 router.get('/edit/:id', (req, res) => {
-    Post.find({ _id: req.params.id })
+    Post.findOne({ _id: req.params.id })
         .then((post) => {
-            res.render('admin/posts/edit', { post: post[0] });
+            Category.find({}).then((cat) => {
+                console.log(post);
+                res.render('admin/posts/edit', { post: post, cat: cat });
+            });
         })
         .catch((err) => {
             res.send(err.message);
@@ -94,6 +102,7 @@ router.put('/edit/:id', (req, res) => {
             post.title = req.body.title;
             post.body = req.body.body;
             post.allowComments = allowComments;
+            post.category = req.body.category;
             post.date = Date.now();
 
             let filename = 'default.jpg';

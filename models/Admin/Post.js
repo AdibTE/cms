@@ -25,12 +25,12 @@ const postSchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    // image:{
-    // 	type: String,
-    // 	default: "http://placehold.it/750x300"
-    // },
     file: {
         type: String
+    },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     }
 });
 

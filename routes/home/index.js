@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Admin/Post');
+const Category = require('../../models/Admin/Category');
 
 router.all('/*', (req, res, next) => {
     req.app.locals.layout = 'home';
@@ -11,7 +12,9 @@ router.get('/', (req, res) => {
     Post.find({})
         .sort({ date: -1 })
         .then((posts) => {
-            res.render('home/index', { posts: posts });
+            Category.find({}).then((cat) => {
+                res.render('home/index', { posts: posts, cat: cat });
+            });
         })
         .catch((err) => {
             res.send(err.message);
@@ -31,7 +34,9 @@ router.get('/register', (req, res) => {
 
 router.get('/post/:id', (req, res) => {
     Post.findOne({ postId: req.params.id }).then((post) => {
-        res.render('home/post', { post: post });
+        Category.find({}).then((cat) => {
+            res.render('home/post', { post: post, cat: cat });
+        });
     });
 });
 

@@ -22,10 +22,10 @@ var config = {
     }
 };
 
-// mongodb://localhost:27017 for local DB
+// mongodb://' + config.mongo.user + ':' + config.mongo.mongoPassword + '@' + config.mongo.hostString
 // Database Connection
 mongoose
-    .connect('mongodb://' + config.mongo.user + ':' + config.mongo.mongoPassword + '@' + config.mongo.hostString, {
+    .connect('mongodb://localhost:27017', {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useFindAndModify: false,
@@ -76,11 +76,13 @@ app.use((req, res, next) => {
 const home = require('./routes/home/index');
 const admin = require('./routes/admin/index');
 const posts = require('./routes/admin/posts');
+const categories = require('./routes/admin/categories');
 
 // Use routes
 app.use('/', home);
 app.use('/admin', admin);
 app.use('/admin/posts', posts);
+app.use('/admin/categories', categories);
 
 // 404 route
 app.get('*', function(req, res) {
