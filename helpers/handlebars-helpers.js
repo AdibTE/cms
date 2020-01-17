@@ -6,5 +6,8 @@ module.exports = {
     },
     genTime: function(date, format) {
         return moment(date).format(format);
+    },
+    genSharp: function(data) {
+        return data.replace(new RegExp('#', 'g'), '%23');
     }
 };

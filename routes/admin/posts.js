@@ -82,9 +82,9 @@ router.post('/create', (req, res) => {
 // Edit GET route
 router.get('/edit/:id', (req, res) => {
     Post.findOne({ _id: req.params.id })
+        .populate('category')
         .then((post) => {
             Category.find({}).then((cat) => {
-                console.log(post);
                 res.render('admin/posts/edit', { post: post, cat: cat });
             });
         })

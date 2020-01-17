@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const upload = require('express-fileupload');
-// const session = require('express-session');
-// const MongoClient = require('mongodb').MongoClient;
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // Mongoose Promise
 mongoose.Promise = global.Promise;
@@ -42,8 +42,11 @@ mongoose
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set view engine
-const { select, genTime } = require('./helpers/handlebars-helpers');
-app.engine('handlebars', handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime } }));
+const { select, genTime, genSharp } = require('./helpers/handlebars-helpers');
+app.engine(
+    'handlebars',
+    handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime, genSharp: genSharp } })
+);
 app.set('view engine', 'handlebars');
 
 // Upload middleware
@@ -56,19 +59,18 @@ app.use(bodyParser.json());
 // Method-OverRide
 app.use(methodOverride('_method'));
 
-// // Session
-// app.use(
-//     session({
-//         secret: 'AdibTE',
-//         resave: true,
-//         saveUninitialized: true
-//             // cookie: { secure: true }
-//     })
-// );
-
-// Local variables using middlewares
+// Flash messagin
+app.use(
+    session({
+        secret: 'adibte',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+app.use(flash());
 app.use((req, res, next) => {
-    // res.locals.success_message = req.flash('success_message');
+    res.locals.success_message = req.flash('success_message');
+    res.locals.error_message = req.flash('error_message');
     next();
 });
 

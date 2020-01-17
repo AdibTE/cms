@@ -16,6 +16,9 @@
   <!-- JQuery -->
   <script src="/vendor/jquery/jquery.min.js"></script>
 
+  <!-- Moment -->
+  <script src="/vendor/moment/moment.js"></script>
+
   <!-- Custom styles for this template -->
   <link href="/css/blog-home.css" rel="stylesheet">
 
@@ -29,7 +32,7 @@
   <!-- Page Content -->
   <div class="container">
     <div class="row">
-
+      {{> home/flash}}
       {{{body}}}
 
     </div>
