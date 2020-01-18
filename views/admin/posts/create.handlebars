@@ -21,13 +21,17 @@
         Create Post
       </h1>
       {{#if errors}}
-      {{#each errors}}
-      <div class="alert alert-danger">
-        {{message}}
-      </div>
-      {{/each}}
+        {{#each errors}}
+          <div class="alert alert-danger">
+            {{message}}
+          </div>
+        {{/each}}
       {{/if}}
-      <form action="/admin/posts/create" method="POST" enctype="multipart/form-data">
+      <form
+        action="/admin/posts/create"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <div class="form-group">
           <div class="form-group">
             <label for="#category">
@@ -35,7 +39,9 @@
             </label>
             <select name="category" id="category" class="form-control">
               {{#each cat}}
-              <option value="{{id}}">{{name}}</option>
+                <option value="{{id}}">
+                  {{name}}
+                </option>
               {{/each}}
             </select>
           </div>
@@ -59,7 +65,13 @@
             <label for="title">
               Title
             </label>
-            <input name="title" type="text" class="form-control" id="title" placeholder="Enter Title" />
+            <input
+              name="title"
+              type="text"
+              class="form-control"
+              id="title"
+              placeholder="Enter Title"
+            />
           </div>
           <div class="form-group">
             <label for="file">
@@ -84,7 +96,12 @@
           <div class="form-group">
             <label for="AllowComments">
               Allow comments
-              <input checked name="allowComments" type="checkbox" id="AllowComments" />
+              <input
+                checked
+                name="allowComments"
+                type="checkbox"
+                id="AllowComments"
+              />
             </label>
           </div>
           <input type="submit" value="Post" class="btn btn-primary btn-block" />
@@ -94,10 +111,10 @@
   </div>
 </div>
 
-<script>
-  { { #if postCreate} }
-  swal("Done!", "Post Added successfuly.", "success").then(() => {
+{{#if postCreate}}
+  <script>
+    swal("Done!", "Post Added successfuly.", "success").then(() => {
     window.location.href = '/admin/posts';
   })
-  { { /if}}
-</script>
+  </script>
+{{/if}}

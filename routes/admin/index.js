@@ -3,10 +3,11 @@ const router = express.Router();
 const Post = require('../../models/Admin/Post');
 const faker = require('faker');
 const { uploadDir } = require('../../helpers/uploadHelper');
-const fs = require('fs')
+const fs = require('fs');
+const { userAuth } = require('../../helpers/authUser');
 
 // Set layout
-router.all('/*', (req, res, next) => {
+router.all('/*', userAuth, (req, res, next) => {
     req.app.locals.layout = 'admin';
     next();
 });
@@ -39,8 +40,8 @@ router.post('/gen_fake_post', (req, res) => {
 router.post('/removeAllPost', (req, res) => {
     Post.deleteMany({})
         .then((post) => {
-            if(post.file != 'default.jpg'){
-                console.log(post.file)
+            if (post.file != 'default.jpg') {
+                console.log(post.file);
                 // fs.unlink(uploadDir + post.file, (err) => {
                 //     if (err) throw err;
                 // });

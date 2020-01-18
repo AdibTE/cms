@@ -4,9 +4,10 @@ const Post = require('../../models/Admin/Post');
 const Category = require('../../models/Admin/Category');
 const { isEmpty, uploadDir } = require('../../helpers/uploadHelper');
 const fs = require('fs');
+const { userAuth } = require('../../helpers/authUser');
 
 // Set layout
-router.all('/*', (req, res, next) => {
+router.all('/*', userAuth, (req, res, next) => {
     req.app.locals.layout = 'admin';
     next();
 });
@@ -69,7 +70,6 @@ router.post('/create', (req, res) => {
             newPost
                 .save()
                 .then((savedPost) => {
-                    console.log('[ USER SAVED ] id: ' + savedPost._id);
                     res.render('admin/posts/create', { postCreate: true });
                 })
                 .catch((err) => {

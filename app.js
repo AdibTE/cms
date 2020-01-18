@@ -8,24 +8,15 @@ const methodOverride = require('method-override');
 const upload = require('express-fileupload');
 const flash = require('connect-flash');
 const session = require('express-session');
+const { mongoDbUrl } = require('./config/database');
+const passport = require('passport');
 
 // Mongoose Promise
 mongoose.Promise = global.Promise;
 
-// Database configs
-var config = {
-    mongo: {
-        hostString: '9a.mongo.evennode.com:27017,9b.mongo.evennode.com:27017/7326512cb1952073d6d9cc37635e5dcf',
-        user: '7326512cb1952073d6d9cc37635e5dcf',
-        db: '7326512cb1952073d6d9cc37635e5dcf',
-        mongoPassword: 'TEDB10111'
-    }
-};
-
-// mongodb://' + config.mongo.user + ':' + config.mongo.mongoPassword + '@' + config.mongo.hostString
 // Database Connection
 mongoose
-    .connect('mongodb://localhost:27017', {
+    .connect(mongoDbUrl, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useFindAndModify: false,
@@ -68,9 +59,17 @@ app.use(
     })
 );
 app.use(flash());
+
+// Passport Auth
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Local variables
 app.use((req, res, next) => {
+    res.locals.user = req.user || null;
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
+    res.locals.error = req.flash('error');
     next();
 });
 
