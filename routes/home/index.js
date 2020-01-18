@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const Post = require('../../models/Admin/Post');
 const Category = require('../../models/Admin/Category');
 const User = require('../../models/Admin/User');
+const Comment = require('../../models/Admin/Comment');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
