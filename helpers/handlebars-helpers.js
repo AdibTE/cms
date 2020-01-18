@@ -1,4 +1,5 @@
 const moment = require('moment');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
     select: (selected, options) => {

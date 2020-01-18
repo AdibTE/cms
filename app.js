@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { select, genTime, genSharp } = require('./helpers/handlebars-helpers');
 app.engine(
     'handlebars',
-    handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime, genSharp: genSharp } })
+    handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime, genSharp: genSharp} })
 );
 app.set('view engine', 'handlebars');
 
@@ -78,12 +78,14 @@ const home = require('./routes/home/index');
 const admin = require('./routes/admin/index');
 const posts = require('./routes/admin/posts');
 const categories = require('./routes/admin/categories');
+const users = require('./routes/admin/users');
 
 // Use routes
 app.use('/', home);
 app.use('/admin', admin);
 app.use('/admin/posts', posts);
 app.use('/admin/categories', categories);
+app.use('/admin/users', users);
 
 // 404 route
 app.get('*', function(req, res) {
