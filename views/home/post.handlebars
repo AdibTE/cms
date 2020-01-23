@@ -1,3 +1,4 @@
+{{#if post}}
 <!-- Post Content Column -->
 <div class="col-lg-8">
   <!-- Title -->
@@ -39,6 +40,7 @@
   </script>
   <hr />
 
+  {{#if post.allowComments}}
   <!-- Comments Form -->
   <div class="card my-4">
     <h5 class="card-header">
@@ -57,18 +59,25 @@
     </div>
   </div>
 
-  <!-- Single Comment -->
   {{#each post.comments}}
+  {{#if this.approved}}
   <div class="media mb-4">
     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="" />
     <div class="media-body">
       <h5 class="mt-0">
-        Commenter Name
+        {{this.user.firstName}} {{this.user.lastName}}
+        <small style="font-size: 10px;">
+          Commented on {{genTime this.date 'Do MMMM YYYY, hh:mm a'}}
+        </small>
       </h5>
-      {{this}}
+      {{this.body}}
     </div>
   </div>
+  {{/if}}
   {{/each}}
+  {{/if}}
 </div>
-
 {{> home/sidebar}}
+{{else}}
+{{> home/404page}}
+{{/if}}

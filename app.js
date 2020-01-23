@@ -33,10 +33,13 @@ mongoose
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set view engine
-const { select, genTime, genSharp } = require('./helpers/handlebars-helpers');
+const { select, genTime, genSharp, checkPage } = require('./helpers/handlebars-helpers');
 app.engine(
     'handlebars',
-    handlebars({ defaultLayout: 'home', helpers: { select: select, genTime: genTime, genSharp: genSharp } })
+    handlebars({
+        defaultLayout: 'home',
+        helpers: { select: select, genTime: genTime, genSharp: genSharp, checkPage: checkPage }
+    })
 );
 app.set('view engine', 'handlebars');
 
@@ -69,6 +72,7 @@ app.use((req, res, next) => {
     res.locals.user = req.user || null;
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
+    res.locals.success_alert = req.flash('success_alert');
     res.locals.error = req.flash('error');
     next();
 });

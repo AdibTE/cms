@@ -19,8 +19,11 @@
   {{!-- JQuery --}}
   <script src="/vendor/jquery/jquery.min.js"></script>
   <!-- Include Editor style. -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/css/froala_editor.pkgd.min.css" integrity="sha256-IlwjDpkp06csTITuiHnkh8loDaky6iPhZPn8wVKqiCs=" crossorigin="anonymous" />  <!-- Include JS file. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/js/froala_editor.pkgd.min.js" integrity="sha256-/+4bfnKRHD52UKP7EUrsdjypQwe3fbTgOtVDUVwCm9E=" crossorigin="anonymous"></script>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/css/froala_editor.pkgd.min.css"
+    integrity="sha256-IlwjDpkp06csTITuiHnkh8loDaky6iPhZPn8wVKqiCs=" crossorigin="anonymous" /> <!-- Include JS file. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/3.0.6/js/froala_editor.pkgd.min.js"
+    integrity="sha256-/+4bfnKRHD52UKP7EUrsdjypQwe3fbTgOtVDUVwCm9E=" crossorigin="anonymous"></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -43,7 +46,8 @@
       <i class="fa fa-angle-up"></i>
     </a>
     <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -60,7 +64,8 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -69,7 +74,7 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">{{user.firstName}} {{user.lastName}} <br/>{{user.email}}</div>
+          <div class="modal-body">{{user.firstName}} {{user.lastName}} <br />{{user.email}}</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           </div>
@@ -82,10 +87,10 @@
     <!-- Core plugin JavaScript-->
     <script src="/vendor/jquery/jquery.easing.min.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="/js/sb-admin.min.js"></script> 
+    <script src="/js/sb-admin.min.js"></script>
     <!-- Custom Editor script -->
     <script>
-      FroalaEditor.DefineIcon('buttonIcon', { NAME: 'star', SVG_KEY: 'star'})
+      FroalaEditor.DefineIcon('buttonIcon', { NAME: 'star', SVG_KEY: 'star' })
       FroalaEditor.RegisterQuickInsertButton('myButton', {
         icon: 'buttonIcon',
         title: 'My Button',
@@ -94,12 +99,8 @@
         },
         undo: true
       })
-      new FroalaEditor('#froala-editor', {
-        quickInsertButtons: ['image', 'table', 'ol', 'ul', 'myButton'],
-        pluginsEnabled: ['quickInsert', 'image', 'table', 'lists'],
-        htmlAllowedAttrs: ['name']
-      });
-    </script>   
+      new FroalaEditor('#froala-editor', {});
+    </script>
   </div>
 </body>
 

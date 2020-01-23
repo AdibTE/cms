@@ -22,7 +22,7 @@
             <table class="table table-bordered">
                 <thead class="text-center">
                     <tr>
-                        <th>id</th>
+                        <th>Message</th>
                         <th>Author</th>
                         <th>Owner</th>
                         <th>Date</th>
@@ -32,17 +32,24 @@
                 <tbody class="text-center">
                     {{#each comments}}
                     <tr>
-                        <td>{{_id}}</td>
-                        <td>{{user}}</td>
-                        <td>{{date}}</td>
-                        {{!-- <td>
-                            <a href="#"><i class="fa fa-edit fa-lg"></i></a>
-                            <form action="/admin/comments/{{id}}?_method=DELETE" method="POST" style="all: unset;">
+                        <td>{{body}}</td>
+                        <td>{{user.email}}</td>
+                        <td>...</td>
+                        <td>{{genTime date 'YYYY MMMM DDD, hh:mm a'}}</td>
+                        <td>
+                            {{#unless approved}}
+                            <form action="/admin/comments/{{id}}?_method=Patch" method="POST" style="all: unset;">
                                 <button type="submit" style="all: unset;cursor:pointer">
-                                    <i class="fa fa-trash fa-lg text-danger"></i>
+                                    <i class="fa fa-check fa-lg text-success" title="approve"></i>
                                 </button>
                             </form>
-                        </td> --}}
+                            {{/unless}}
+                            <form action="/admin/comments/{{id}}?_method=Delete" method="POST" style="all: unset;">
+                                <button type="submit" style="all: unset;cursor:pointer">
+                                    <i class="fa fa-times fa-lg text-danger" title="Delete"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -53,24 +60,26 @@
 </div>
 
 <script>
-    {{!-- $(function () {
-        $('.fa-edit').on('click', (e) => {
-            let $el = $(e.target).parent().parent().prev();
-            if ($('#editForm').length == 1) {
-                let inputvalue = $el.find('input').val().trim();
-                $('#editForm').remove();
-                $el.html(inputvalue)
-            } else {
-                let value = $el.text();
-                let id = $el.prev().text();
-                $el.html(`
+    {
+        {
+            !--$(function () {
+                $('.fa-edit').on('click', (e) => {
+                    let $el = $(e.target).parent().parent().prev();
+                    if ($('#editForm').length == 1) {
+                        let inputvalue = $el.find('input').val().trim();
+                        $('#editForm').remove();
+                        $el.html(inputvalue)
+                    } else {
+                        let value = $el.text();
+                        let id = $el.prev().text();
+                        $el.html(`
                 <form id="editForm" action="/admin/categories/edit/${id}?_method=PUT" method="POST" class="col-md-12 row">
                     <input name="newName" type="text" class="form-control col-md-10" value="${value}">
                     <button class="btn btn-block btn-primary col-md-2">Edit</button>
                 </form>
             `)
-            }
-
-        })
-    }) --}}
+                    }
+                })
+            })--}
+    }
 </script>

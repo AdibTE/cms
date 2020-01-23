@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Admin/Post');
 const Category = require('../../models/Admin/Category');
+const Comment = require('../../models/Admin/Comment');
 const { isEmpty, uploadDir } = require('../../helpers/uploadHelper');
 const fs = require('fs');
 const { userAuth } = require('../../helpers/authUser');
@@ -16,7 +17,6 @@ router.all('/*', userAuth, (req, res, next) => {
 router.get('/', (req, res) => {
     Post.find({})
         .sort({ date: -1 })
-        .limit(10)
         .populate('category')
         .then((posts) => {
             res.render('admin/posts/index', { posts: posts });
@@ -137,8 +137,15 @@ router.put('/edit/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     Post.findOne({ _id: req.params.id })
         .then((post) => {
-            fs.unlink(uploadDir + post.file, (err) => {
-                if (err) throw err;
+            if (post.file != 'default.jpg') {
+                fs.unlink(uploadDir + post.file, (err) => {
+                    if (err) console.log(err);
+                });
+            }
+            post.comments.forEach((comment) => {
+                Comment.deleteOne({ _id: comment }).then(() => {}).catch((err) => {
+                    console.log(err);
+                });
             });
             post.remove();
         })

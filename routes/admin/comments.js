@@ -11,6 +11,7 @@ router.all('/*', (req, res, next) => {
     next();
 });
 
+// Post new comment
 router.post('/', (req, res) => {
     Post.findOne({ _id: req.body.id }).then((_fpost) => {
         const newComment = new Comment({
@@ -22,6 +23,7 @@ router.post('/', (req, res) => {
             .save()
             .then((_spost) => {
                 newComment.save();
+                req.flash('success_message', 'Comment posted. It will show when it approves by the admin');
                 res.redirect(`/post/${_fpost.postId}`);
             })
             .catch((err) => {
@@ -30,22 +32,30 @@ router.post('/', (req, res) => {
     });
 });
 
+// Get all comments
 router.get('/', (req, res) => {
-    // Post.find({}).then((_fposts) => {
-    //     console.log(_fposts);
-    //     let $comments = [];
-    //     _fposts.forEach((post) => {
-    //         Comment.find({ _id: post.comments }).then((_fcomments) => {
-    //             _fcomments.forEach((comment) => {
-    //                 $comments.push(comment);
-    //             });
-    //         });
-    //     });
-    //     res.render('admin/comments', { comments: $comments });
-    // });
-    Comment.find({}).then((_fcomments) => {
-        console.log(_fcomments);
+    Comment.find({}).sort({ date: -1 }).populate('user').then((_fcomments) => {
         res.render('admin/comments', { comments: _fcomments });
+    });
+});
+
+// Approve comment
+router.patch('/:id', (req, res) => {
+    Comment.findOne({ _id: req.params.id }).then((comment) => {
+        comment.approved = true;
+        comment.save().catch((err) => {
+            console.log(err);
+        });
+        req.flash('success_message', 'Comment Approved successfuly');
+        res.redirect('/admin/comments');
+    });
+});
+
+// Delete comment
+router.delete('/:id', (req, res) => {
+    Comment.deleteOne({ _id: req.params.id }).then((comment) => {
+        req.flash('success_message', 'Comment Deleted successfuly');
+        res.redirect('/admin/comments');
     });
 });
 

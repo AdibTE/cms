@@ -10,5 +10,12 @@ module.exports = {
     },
     genSharp: function(data) {
         return data.replace(new RegExp('#', 'g'), '%23');
+    },
+    checkPage: function(page) {
+        if (page >= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 };

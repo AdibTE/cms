@@ -16,11 +16,20 @@ router.all('/*', (req, res, next) => {
 
 // Get All Posts
 router.get('/', (req, res) => {
+    let limit = parseInt(req.query.limit) || 3;
+    let page = parseInt(req.query.page) || 0;
     Post.find({})
         .sort({ date: -1 })
+        .limit(limit)
+        .skip(page * limit)
         .then((posts) => {
             Category.find({}).then((cat) => {
-                res.render('home/index', { posts: posts, cat: cat, viewName: 'Home' });
+                res.render('home/index', {
+                    posts: posts,
+                    cat: cat,
+                    viewName: 'Home',
+                    pages: { next: page - 1, prev: page + 1 }
+                });
             });
         })
         .catch((err) => {
@@ -30,20 +39,34 @@ router.get('/', (req, res) => {
 
 // Get Single Post
 router.get('/post/:id', (req, res) => {
-    Post.findOne({ postId: req.params.id }).then((post) => {
-        Category.find({}).then((cat) => {
-            res.render('home/post', { post: post, cat: cat });
+    Post.findOne({ postId: req.params.id })
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user'
+            }
+        })
+        .then((post) => {
+            Category.find({}).then((cat) => {
+                res.render('home/post', { post: post, cat: cat });
+            });
         });
-    });
 });
 
 // Get Specified Category
 router.get('/category/:name', (req, res) => {
+    let limit = parseInt(req.query.limit) || 3;
+    let page = parseInt(req.query.page) || 0;
     Category.findOne({ name: req.params.name })
         .then((cat) => {
-            Post.find({ category: cat._id }).then((posts) => {
+            Post.find({ category: cat._id }).limit(limit).skip(page * limit).then((posts) => {
                 Category.find({}).then((allcat) => {
-                    res.render('home/index', { posts: posts, cat: allcat, viewName: cat.name });
+                    res.render('home/index', {
+                        posts: posts,
+                        cat: allcat,
+                        viewName: cat.name,
+                        pages: { next: page - 1, prev: page + 1 }
+                    });
                 });
             });
         })
