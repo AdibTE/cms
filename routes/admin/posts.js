@@ -18,6 +18,7 @@ router.get('/', isAdmin, (req, res) => {
     Post.find({})
         .sort({ date: -1 })
         .populate('category')
+        .populate('user')
         .then((posts) => {
             res.render('admin/posts/index', { posts: posts });
         })
