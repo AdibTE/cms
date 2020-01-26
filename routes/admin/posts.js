@@ -32,6 +32,7 @@ router.get('/myPosts', (req, res) => {
     Post.find({ user: req.user.id })
         .sort({ date: -1 })
         .populate('category')
+        .populate('user')
         .then((posts) => {
             res.render('admin/posts/index', { posts: posts });
         })
