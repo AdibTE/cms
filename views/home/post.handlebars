@@ -10,7 +10,7 @@
   <p class="lead">
     by
     <a href="#">
-      Start Bootstrap
+      {{post.user.firstName}} {{post.user.lastName}}
     </a>
   </p>
 
@@ -41,6 +41,8 @@
   <hr />
 
   {{#if post.allowComments}}
+  {{#if user}}
+
   <!-- Comments Form -->
   <div class="card my-4">
     <h5 class="card-header">
@@ -58,7 +60,11 @@
       </form>
     </div>
   </div>
-
+  {{else}}
+  <div style="padding: 10px;padding-bottom:25px;" class="text-muted">
+    You need to <a href="">Login</a> for writing comments.
+  </div>
+  {{/if}}
   {{#each post.comments}}
   {{#if this.approved}}
   <div class="media mb-4">
@@ -75,6 +81,7 @@
   </div>
   {{/if}}
   {{/each}}
+  {{else}}
   {{/if}}
 </div>
 {{> home/sidebar}}

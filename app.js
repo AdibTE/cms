@@ -33,12 +33,19 @@ mongoose
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set view engine
-const { select, genTime, genSharp, checkPage } = require('./helpers/handlebars-helpers');
+const { select, genTime, genSharp, checkPage, checkLastPage, isAdmin } = require('./helpers/handlebars-helpers');
 app.engine(
     'handlebars',
     handlebars({
         defaultLayout: 'home',
-        helpers: { select: select, genTime: genTime, genSharp: genSharp, checkPage: checkPage }
+        helpers: {
+            select: select,
+            genTime: genTime,
+            genSharp: genSharp,
+            checkPage: checkPage,
+            checkLastPage: checkLastPage,
+            isAdmin: isAdmin
+        }
     })
 );
 app.set('view engine', 'handlebars');

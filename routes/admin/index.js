@@ -25,6 +25,7 @@ router.post('/gen_fake_post', (req, res) => {
 
         for (let i = 0; i < req.body.amount; i++) {
             let post = new Post();
+            post.user = req.user.id;
             post.title = faker.name.title();
             post.file = 'default.jpg';
             post.body = faker.lorem.paragraph(20);

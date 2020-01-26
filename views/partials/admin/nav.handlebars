@@ -2,25 +2,14 @@
   <a class="navbar-brand" href="/">
     HOME
   </a>
-  <button
-    class="navbar-toggler navbar-toggler-right"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarResponsive"
-    aria-controls="navbarResponsive"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+    aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-      <li
-        class="nav-item"
-        data-toggle="tooltip"
-        data-placement="right"
-        title="Dashboard"
-      >
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
         <a class="nav-link" href="/admin">
           <i class="fa fa-fw fa-dashboard"></i>
           <span class="nav-link-text">
@@ -28,27 +17,26 @@
           </span>
         </a>
       </li>
-      <li
-        class="nav-item"
-        data-toggle="tooltip"
-        data-placement="right"
-        title="Components"
-      >
-        <a
-          class="nav-link nav-link-collapse collapsed"
-          data-toggle="collapse"
-          href="#collapsePosts"
-          data-parent="#exampleAccordion"
-        >
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePosts"
+          data-parent="#exampleAccordion">
           <i class="fa fa-fw fa-wrench"></i>
           <span class="nav-link-text">
             Posts
           </span>
         </a>
         <ul class="sidenav-second-level collapse" id="collapsePosts">
+          {{#if (isAdmin user.type.type)}}
           <li>
+
             <a href="/admin/posts">
               All Posts
+            </a>
+          </li>
+          {{/if}}
+          <li>
+            <a href="/admin/posts/myPosts">
+              My Posts
             </a>
           </li>
           <li>
@@ -66,17 +54,32 @@
           </span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/admin/users">
+      {{#if (isAdmin user.type.type)}}
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers"
+          data-parent="#exampleAccordion">
           <i class="fa fa-fw fa-user"></i>
           <span class="nav-link-text">
             Users
           </span>
         </a>
+        <ul class="sidenav-second-level collapse" id="collapseUsers">
+          <li>
+            <a href="/admin/users">
+              Users
+            </a>
+          </li>
+          <li>
+            <a href="/admin/users/types">
+              User Types
+            </a>
+          </li>
+        </ul>
       </li>
+      {{/if}}
       <li class="nav-item">
         <a class="nav-link" href="/admin/comments">
-          <i class="fa fa-fw fa-gear"></i>
+          <i class="fa fa-fw fa-comment"></i>
           <span class="nav-link-text">
             Comments
           </span>
@@ -92,14 +95,8 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle mr-lg-2"
-          id="messagesDropdown"
-          href="#"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-fw fa-envelope"></i>
           <span class="d-lg-none">
             Messages
@@ -161,14 +158,8 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle mr-lg-2"
-          id="alertsDropdown"
-          href="#"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-fw fa-bell"></i>
           <span class="d-lg-none">
             Alerts
@@ -238,11 +229,7 @@
       <li class="nav-item">
         <form class="form-inline my-2 my-lg-0 mr-lg-2">
           <div class="input-group">
-            <input
-              class="form-control"
-              type="text"
-              placeholder="Search for..."
-            />
+            <input class="form-control" type="text" placeholder="Search for..." />
             <span class="input-group-btn">
               <button class="btn btn-primary" type="button">
                 <i class="fa fa-search"></i>
@@ -254,17 +241,12 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" data-target="#userModal">
           <i class="fa fa-fw fa-user"></i>{{#if user}}
-            {{user.firstName}}
+          {{user.firstName}}
           {{/if}}
         </a>
       </li>
       <li class="nav-item">
-        <a
-          href="/login"
-          class="nav-link"
-          data-toggle="modal"
-          data-target="#exampleModal"
-        >
+        <a href="/login" class="nav-link" data-toggle="modal" data-target="#exampleModal">
           <i class="fa fa-fw fa-sign-out"></i>
           Logout
         </a>

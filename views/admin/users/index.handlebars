@@ -24,22 +24,39 @@
                     <tr>
                         <th>id</th>
                         <th>Email</th>
+                        <th>Type</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
+
                 <tbody class="text-center">
                     {{#each users}}
-                    <tr>
-                        <td>{{_id}}</td>
-                        <td>{{email}}</td>
-                    </tr>
+                    <form action="/admin/users/edit/{{id}}?_method=PATCH" method="POST" style="all: unset;">
+                        <tr>
+                            <td>{{_id}}</td>
+                            <td>{{email}}</td>
+                            <td>
+                                <script>
+                                    $(function () {
+                                        $('[user-id="{{_id}}"]').val('{{type.type}}')
+                                    })
+                                </script>
+                                <select name="type" user-id="{{_id}}" class="form-control">
+                                    {{#each ../userTypes}}
+                                    <option value="{{type}}">{{name}}</option>
+                                    {{/each}}
+                                </select>
+                            </td>
+                            <td>
+                                <button type="submit" style="all: unset;cursor:pointer">
+                                    <i class="fa fa-check text-success"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
                     {{/each}}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-</div>
-
-<script>
-
-</script>

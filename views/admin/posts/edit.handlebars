@@ -7,7 +7,7 @@
       </a>
     </li>
     <li class="breadcrumb-item">
-      <a href="/admin/posts">
+      <a href="/admin/posts/myPosts">
         Posts
       </a>
     </li>
@@ -104,13 +104,15 @@
 </div>
 
 <script>
-  {{#if error}}
-      swal("Oops!", "Creating Post Faild. Please complete all fields.", "error")
-  {{/if}}
-  {{#if postEdit}}
+  { { #if error} }
+  swal("Oops!", "Creating Post Faild. Please complete all fields.", "error")
+  {
+    {
+      /if}}
+      { { #if postEdit} }
       swal("Done!", "Post Edited successfuly.", "success").then(() => {
         window.location.href = '/admin/posts';
       })
-  {{/if}}
+      { { /if}}
 
 </script>

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const Post = require('../../models/Admin/Post');
 const Category = require('../../models/Admin/Category');
 const User = require('../../models/Admin/User');
+const UserType = require('../../models/Admin/UserType');
 const Comment = require('../../models/Admin/Comment');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -22,13 +23,18 @@ router.get('/', (req, res) => {
         .sort({ date: -1 })
         .limit(limit)
         .skip(page * limit)
+        .populate('user')
         .then((posts) => {
-            Category.find({}).then((cat) => {
-                res.render('home/index', {
-                    posts: posts,
-                    cat: cat,
-                    viewName: 'Home',
-                    pages: { next: page - 1, prev: page + 1 }
+            // get all posts length
+            Post.find({}).then((allposts) => {
+                let postslength = allposts.length;
+                Category.find({}).then((cat) => {
+                    res.render('home/index', {
+                        posts: posts,
+                        cat: cat,
+                        viewName: 'Home',
+                        pages: { next: page - 1, prev: page + 1, limit: limit, maxlength: postslength }
+                    });
                 });
             });
         })
@@ -46,9 +52,11 @@ router.get('/post/:id', (req, res) => {
                 path: 'user'
             }
         })
+        .populate('user')
         .then((post) => {
+            let postOwner = req.user && req.user._id == post.user.id ? true : false;
             Category.find({}).then((cat) => {
-                res.render('home/post', { post: post, cat: cat });
+                res.render('home/post', { post: post, cat: cat, postOwner: postOwner });
             });
         });
 });
@@ -59,13 +67,17 @@ router.get('/category/:name', (req, res) => {
     let page = parseInt(req.query.page) || 0;
     Category.findOne({ name: req.params.name })
         .then((cat) => {
-            Post.find({ category: cat._id }).limit(limit).skip(page * limit).then((posts) => {
-                Category.find({}).then((allcat) => {
-                    res.render('home/index', {
-                        posts: posts,
-                        cat: allcat,
-                        viewName: cat.name,
-                        pages: { next: page - 1, prev: page + 1 }
+            // get all posts length
+            Post.find({ category: cat._id }).then((posts) => {
+                let allposts = posts.length;
+                Post.find({ category: cat._id }).populate('user').limit(limit).skip(page * limit).then((posts) => {
+                    Category.find({}).then((allcat) => {
+                        res.render('home/index', {
+                            posts: posts,
+                            cat: allcat,
+                            viewName: cat.name,
+                            pages: { next: page - 1, prev: page + 1, limit: limit, maxlength: allposts }
+                        });
                     });
                 });
             });
@@ -103,9 +115,14 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(null, user);
-    });
+    User.findById(id)
+        .populate('type')
+        .then((user) => {
+            done(null, user);
+        })
+        .catch((err) => {
+            res.send(err.message);
+        });
 });
 
 // Post Login
@@ -136,25 +153,32 @@ router.post('/register', (req, res) => {
             errors.push(`This Email has been registered!`);
         }
         if (errors.length == 0) {
-            let newuser = new User({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: req.body.password
-            });
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newuser.password, salt, (err, hash) => {
-                    newuser.password = hash;
-                    newuser
-                        .save()
-                        .then((user) => {
-                            res.render('home/register', { success: true });
-                        })
-                        .catch((err) => {
-                            console.log(err);
+            UserType.findOne({ type: 1 })
+                .then((usertype) => {
+                    let newuser = new User({
+                        firstName: req.body.firstName,
+                        lastName: req.body.lastName,
+                        email: req.body.email,
+                        password: req.body.password,
+                        type: usertype
+                    });
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newuser.password, salt, (err, hash) => {
+                            newuser.password = hash;
+                            newuser
+                                .save()
+                                .then((user) => {
+                                    res.render('home/register', { success: true });
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
                         });
+                    });
+                })
+                .catch((err) => {
+                    res.send(err);
                 });
-            });
         } else {
             res.render('home/register', {
                 errors: errors,

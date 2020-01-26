@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/admin">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="/admin/users/types">
+                User types
+            </a>
+        </li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>
+                User types
+            </h1>
+        </div>
+        <div class="col-md-12 form-group" style="margin-top: 25px;">
+            <form action="" class="row" method="POST">
+                <div class="form-group col-md-5">
+                    <label for="">Name</label>
+                    <input name="name" type="text" class="form-control">
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="">id</label>
+                    <input name="type" type="number" class="form-control">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for=""> </label>
+                    <button class="btn btn-block btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 form-group">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each userTypes}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{type}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

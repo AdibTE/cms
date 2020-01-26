@@ -20,6 +20,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    type: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserType'
     }
 });
 

@@ -5,7 +5,7 @@ const Category = require('../../models/Admin/Category');
 const Comment = require('../../models/Admin/Comment');
 const { isEmpty, uploadDir } = require('../../helpers/uploadHelper');
 const fs = require('fs');
-const { userAuth } = require('../../helpers/authUser');
+const { userAuth, isAdmin, isOwner } = require('../../helpers/authUser');
 
 // Set layout
 router.all('/*', userAuth, (req, res, next) => {
@@ -13,9 +13,22 @@ router.all('/*', userAuth, (req, res, next) => {
     next();
 });
 
-// Index GET route
-router.get('/', (req, res) => {
+// All Posts GET route
+router.get('/', isAdmin, (req, res) => {
     Post.find({})
+        .sort({ date: -1 })
+        .populate('category')
+        .then((posts) => {
+            res.render('admin/posts/index', { posts: posts });
+        })
+        .catch((err) => {
+            res.send(err.message);
+        });
+});
+
+// user Posts GET route
+router.get('/myPosts', (req, res) => {
+    Post.find({ user: req.user.id })
         .sort({ date: -1 })
         .populate('category')
         .then((posts) => {
@@ -58,6 +71,7 @@ router.post('/create', (req, res) => {
         Post.find().sort({ postId: -1 }).limit(1).then((sr) => {
             sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
             const newPost = new Post({
+                user: req.user.id,
                 status: req.body.status,
                 title: req.body.title,
                 body: req.body.body,
@@ -80,7 +94,7 @@ router.post('/create', (req, res) => {
 });
 
 // Edit GET route
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', isOwner, (req, res, next) => {
     Post.findOne({ _id: req.params.id })
         .populate('category')
         .then((post) => {
@@ -98,6 +112,7 @@ router.put('/edit/:id', (req, res) => {
     Post.findOne({ _id: req.params.id })
         .then((post) => {
             req.body.allowComments == undefined ? (allowComments = false) : (allowComments = true);
+            post.user = req.user.id;
             post.status = req.body.status;
             post.title = req.body.title;
             post.body = req.body.body;

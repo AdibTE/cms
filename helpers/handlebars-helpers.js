@@ -17,5 +17,16 @@ module.exports = {
         } else {
             return false;
         }
+    },
+    checkLastPage: function(page, length, limit) {
+        if (page * limit < length) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isAdmin: (type) => {
+        if (parseInt(type) == 0) return true;
+        else return false;
     }
 };

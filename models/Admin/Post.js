@@ -35,7 +35,11 @@ const postSchema = new Schema({
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comments'
-    }]
+    }],
+    user:{
+        type: Schema.Types.ObjectId,
+        ref: 'Users'
+    }
 }, { usePushEach: true });
 
 module.exports = mongoose.model('post', postSchema);

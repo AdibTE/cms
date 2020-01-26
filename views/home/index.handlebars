@@ -1,3 +1,4 @@
+{{#if posts}}
 <!-- Blog Entries Column -->
 <div class="col-md-8">
   <h1 class="my-4">
@@ -27,14 +28,18 @@
     <div class="card-footer text-muted">
       Posted on {{genTime date "MMMM Do YYYY"}} by
       <a href="#">
-        Start Bootstrap
+        {{user.firstName}} {{user.lastName}}
       </a>
     </div>
   </div>
   {{/each}}
   <!-- Pagination -->
   <ul class="pagination justify-content-center mb-4">
-    <li class="page-item">
+    {{#if (checkLastPage pages.prev pages.maxlength pages.limit) }}
+    <li class="page-item ">
+      {{else}}
+    <li class="page-item disabled">
+      {{/if}}
       <a class="page-link" href="?page={{pages.prev}}">
         &larr; Older
       </a>
@@ -53,3 +58,6 @@
 </div>
 
 {{> home/sidebar}}
+{{else}}
+{{> home/404page}}
+{{/if}}
