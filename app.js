@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 const upload = require('express-fileupload');
 const flash = require('connect-flash');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const { mongoDbUrl } = require('./config/database');
 const passport = require('passport');
 
@@ -61,6 +62,7 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
 // Flash messagin
+app.use(cookieParser());
 app.use(
     session({
         secret: 'adibte',
@@ -80,6 +82,7 @@ app.use((req, res, next) => {
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
     res.locals.success_alert = req.flash('success_alert');
+    res.locals.error_alert = req.flash('error_alert');
     res.locals.error = req.flash('error');
     next();
 });

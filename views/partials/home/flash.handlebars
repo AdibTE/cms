@@ -18,3 +18,8 @@
   swal("Done!", {{ success_alert }}, "success")
 </script>
 {{/if}}
+{{#if error_alert}}
+<script>
+  swal("Error!", {{ error_alert }}, "error")
+</script>
+{{/if}}

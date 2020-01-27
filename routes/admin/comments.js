@@ -42,11 +42,10 @@ router.get('/', (req, res) => {
 // Approve comment
 router.patch('/:id', (req, res) => {
     Comment.findOne({ _id: req.params.id }).then((comment) => {
-        comment.approved = true;
+        comment.approved = req.body.approved;
         comment.save().catch((err) => {
             console.log(err);
         });
-        req.flash('success_message', 'Comment Approved successfuly');
         res.redirect('/admin/comments');
     });
 });

@@ -15,13 +15,8 @@
       <form action="/admin/gen_fake_post" method="POST">
         <div class="form-group row">
           <div class="col-md-8">
-            <input
-              required
-              name="amount"
-              type="number"
-              class="form-control"
-              placeholder="enter number of posts to inject"
-            />
+            <input required name="amount" type="number" class="form-control"
+              placeholder="enter number of posts to inject" />
           </div>
           <div class="col-md-4">
             <button class="btn btn-block btn-secondary">
@@ -44,11 +39,13 @@
 </div>
 
 <script>
-  {{#if added}}
-    swal("Done!", "Posts Added succesfuly", "success")
-  {{/if}}
+  { { #if added} }
+  swal("Done!", "Posts Added succesfuly", "success")
+  {
+    {
+      /if}}
 
-  {{#if deleted}}
-    swal("Done!", "Posts Deleted succesfuly", "success")
-  {{/if}}
+      { { #if deleted} }
+      swal("Done!", "Posts Deleted succesfuly", "success")
+      { { /if}}
 </script>

@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <!-- Breadcrumbs-->
+    <div id="toastsArea" style="position: fixed;z-index:10;right:25px;bottom:25px"></div>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="/admin">
@@ -24,9 +25,9 @@
                     <tr>
                         <th>Message</th>
                         <th>Author</th>
-                        <th>Owner</th>
                         <th>Date</th>
-                        <th>Actions</th>
+                        <th>Status</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -34,16 +35,15 @@
                     <tr>
                         <td>{{body}}</td>
                         <td>{{user.email}}</td>
-                        <td>...</td>
                         <td>{{genTime date 'YYYY MMMM DDD, hh:mm a'}}</td>
                         <td>
-                            {{#unless approved}}
-                            <form action="/admin/comments/{{id}}?_method=Patch" method="POST" style="all: unset;">
-                                <button type="submit" style="all: unset;cursor:pointer">
-                                    <i class="fa fa-check fa-lg text-success" title="approve"></i>
-                                </button>
-                            </form>
-                            {{/unless}}
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" name="status" class="custom-control-input"
+                                    id="customSwitch{{@index}}" {{#if approved}}checked{{/if}} comment-id="{{id}}">
+                                <label class="custom-control-label" for="customSwitch{{@index}}"></label>
+                            </div>
+                        </td>
+                        <td>
                             <form action="/admin/comments/{{id}}?_method=Delete" method="POST" style="all: unset;">
                                 <button type="submit" style="all: unset;cursor:pointer">
                                     <i class="fa fa-times fa-lg text-danger" title="Delete"></i>
@@ -60,26 +60,38 @@
 </div>
 
 <script>
-    {
-        {
-            !--$(function () {
-                $('.fa-edit').on('click', (e) => {
-                    let $el = $(e.target).parent().parent().prev();
-                    if ($('#editForm').length == 1) {
-                        let inputvalue = $el.find('input').val().trim();
-                        $('#editForm').remove();
-                        $el.html(inputvalue)
-                    } else {
-                        let value = $el.text();
-                        let id = $el.prev().text();
-                        $el.html(`
-                <form id="editForm" action="/admin/categories/edit/${id}?_method=PUT" method="POST" class="col-md-12 row">
-                    <input name="newName" type="text" class="form-control col-md-10" value="${value}">
-                    <button class="btn btn-block btn-primary col-md-2">Edit</button>
-                </form>
-            `)
-                    }
-                })
-            })--}
+    $(function () {
+        $('[name="status"]').on('change', (e) => {
+            let bool = $(e.target).prop('checked') ? true : false
+            bool ? $(e.target).removeAttr('checked') : $(e.target).attr('checked', 'checked');
+            let id = $(e.target).attr('comment-id');
+            $.ajax({
+                type: 'POST',
+                url: '/admin/comments/' + id + '?_method=Patch',
+                data: { approved: bool },
+                success: function (res) {
+                    let toastsLength = $('.toast').length;
+                    makeToast(toastsLength, bool)
+                    $(`#toast_${toastsLength}`).toast('show')
+                }
+            })
+        })
+    })
+    function makeToast(id, bool) {
+        let data = bool ? 'Your comment is approved and will apear on the site' : 'You have dismissed the comment and will not appear on the site anymore';
+        let el = `<div class="toast" id="toast_${id}" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500"
+        style="background-color:#9cec9c">
+        <div class="toast-header">
+            <strong class="mr-auto">Success!</strong>
+            <small>Status</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            ${data}
+        </div>
+    </div>`;
+        $('#toastsArea').append(el)
     }
 </script>
