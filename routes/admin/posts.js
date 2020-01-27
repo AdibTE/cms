@@ -86,7 +86,8 @@ router.post('/create', (req, res) => {
             newPost
                 .save()
                 .then((savedPost) => {
-                    res.render('admin/posts/create', { postCreate: true });
+                    req.flash('success_alert', 'Post has been created successfuly');
+                    res.redirect(`/admin/posts/myPosts`);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -141,7 +142,8 @@ router.put('/edit/:id', (req, res) => {
             post
                 .save()
                 .then((post) => {
-                    res.render(`admin/posts/edit`, { post: post, postEdit: true });
+                    req.flash('success_alert', 'Post has been edited successfuly');
+                    res.redirect(`/admin/posts/myPosts`);
                 })
                 .catch((err) => {
                     res.send(err.message);
@@ -167,13 +169,8 @@ router.delete('/:id', (req, res) => {
             post.remove();
         })
         .then(() => {
-            Post.find({})
-                .then((posts) => {
-                    res.render('admin/posts/index', { posts: posts, postDelete: true });
-                })
-                .catch((err) => {
-                    res.send(err.message);
-                });
+            req.flash('success_alert', 'Post has been deleted successfuly');
+            res.redirect(`/admin/posts/myPosts`);
         })
         .catch((err) => {
             res.send(err);

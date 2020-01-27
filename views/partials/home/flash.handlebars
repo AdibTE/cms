@@ -15,11 +15,15 @@
 {{/if}}
 {{#if success_alert}}
 <script>
-  swal("Done!", {{ success_alert }}, "success")
+  $(function () {
+    swal("Done!", "{{ success_alert }}", "success")
+  })
 </script>
 {{/if}}
 {{#if error_alert}}
 <script>
-  swal("Error!", {{ error_alert }}, "error")
+  $(function () {
+    swal("Error!", "{{ error_alert }}", "error")
+  })
 </script>
 {{/if}}

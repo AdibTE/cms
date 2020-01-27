@@ -47,7 +47,7 @@ router.post('/types', (req, res) => {
             res.redirect('/admin/users/types');
         })
         .catch((err) => {
-            req.flash('error_message', 'Id should be unique!');
+            req.flash('error_alert', 'Id should be unique!');
             res.redirect('/admin/users/types');
             // res.send(err.message);
         });
