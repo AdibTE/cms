@@ -61,4 +61,9 @@ router.post('/removeAllPost', (req, res) => {
         });
 });
 
+// Profile router
+router.get('/profile',(req,res)=>{
+    res.render('admin/profile');
+})
+
 module.exports = router;
