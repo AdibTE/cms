@@ -18,8 +18,39 @@
                 Profile
             </h1>
         </div>
-        <div class="col-md-12 form-group" style="margin-top: 50px;">
-            test
+        <div class="row col-md-12" style="margin-top: 50px;">
+            <div class="col-md-4">
+                <div id="ProfileImage">
+                    <img src="/uploads/default.jpg" alt="----------------------------"
+                        style="width: 100%;clip-path:circle()">
+
+                    <label class="col-md-12" style="margin:10px auto">
+                        <input type="button" class="btn btn-block btn-secondary" id="pictureBtn"
+                            value="change Profile Picture">
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <label class="col-md-12 form-group">
+                    First name:
+                    <input type="text" class="form-control" name="firstName" value="">
+                </label>
+                <label class="col-md-12 form-group">
+                    Last name:
+                    <input type="text" class="form-control" name="lastName" value="">
+                </label>
+                <label class="col-md-12 form-group">
+                    Email:
+                    <input type="email" class="form-control" name="email" value="">
+                </label>
+                <label class="col-md-12" style="margin:10px auto">
+                    <input type="button" class="btn btn-block btn-secondary" id="passwordBtn" value="change Password">
+                </label>
+            </div>
+            <div class="col-md-12">
+                <input type="button" class="btn btn-primary" style="margin:auto" id="passwordBtn"
+                    value="change Password">
+            </div>
         </div>
     </div>
 </div>
