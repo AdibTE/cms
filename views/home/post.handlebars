@@ -68,11 +68,12 @@
   {{#each post.comments}}
   {{#if this.approved}}
   <div class="media mb-4">
-    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="" />
+    <img class="d-flex mr-3 rounded-circle" style="width: 50px;height:50px;object-fit:cover"
+      src="/uploads/profile/{{this.user.picture}}" alt="" />
     <div class="media-body">
       <h5 class="mt-0">
         {{this.user.firstName}} {{this.user.lastName}}
-        <small style="font-size: 10px;">
+        <small class="text-muted" style="font-size: 10px;">
           Commented on {{genTime this.date 'Do MMMM YYYY, hh:mm a'}}
         </small>
       </h5>

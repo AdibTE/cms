@@ -18,54 +18,72 @@
         Profile
       </h1>
     </div>
-    <div class="row col-md-12" style="margin-top: 50px;">
-      <div class="col-md-4">
-        <div id="ProfileImage">
-          <img
-            src="/uploads/default.jpg"
-            alt="----------------------------"
-            style="width: 100%;clip-path:circle()"
-          />
-
-          <label class="col-md-12" style="margin:10px auto">
-            <input
-              type="button"
-              class="btn btn-block btn-secondary"
-              id="pictureBtn"
-              value="change Profile Picture"
-            />
+    <form action="?_method=PUT" method="POST" enctype="multipart/form-data">
+      <div class="row col-md-12" style="margin-top: 50px;">
+        <div class="col-md-4">
+          <div id="ProfileImage">
+            <img src="/uploads/profile/{{picture}}" alt="----------------------------"
+              style="width: 100%;clip-path:circle()" />
+            <label class="col-md-12" style="margin:10px auto">
+              <input type="button" class="btn btn-block btn-secondary" id="pictureBtn" value="change Profile Picture" />
+              <input type="file" id="picInput" name="picture" style="display: none;" onchange="checkFile(this)">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <label class="col-md-12 form-group">
+            First name:
+            <input type="text" class="form-control" name="firstName" value="{{firstName}}" />
           </label>
+          <label class="col-md-12 form-group">
+            Last name:
+            <input type="text" class="form-control" name="lastName" value="{{lastName}}" />
+          </label>
+          <label class="col-md-12 form-group">
+            Email:
+            <input type="email" class="form-control" name="email" value="{{email}}" />
+          </label>
+          <label class="col-md-12" style="margin:10px auto">
+            <input type="button" class="btn btn-block btn-secondary" id="passwordBtn" value="change Password" />
+          </label>
+          <div class="col-md-12">
+            <input type="submit" class="btn btn-primary btn-block" value="Save" />
+          </div>
         </div>
       </div>
-      <div class="col-md-8">
-        <label class="col-md-12 form-group">
-          First name:
-          <input type="text" class="form-control" name="firstName" value="{{firstName}}" />
-        </label>
-        <label class="col-md-12 form-group">
-          Last name:
-          <input type="text" class="form-control" name="lastName" value="{{lastName}}" />
-        </label>
-        <label class="col-md-12 form-group">
-          Email:
-          <input type="email" class="form-control" name="email" value="{{email}}" />
-        </label>
-        <label class="col-md-12" style="margin:10px auto">
-          <input
-            type="button"
-            class="btn btn-block btn-secondary"
-            id="passwordBtn"
-            value="change Password"
-          />
-        </label>
-        <div class="col-md-12">
-          <input
-            type="submit"
-            class="btn btn-primary btn-block"
-            value="Save"
-          />
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
+
+<script>
+  $(function () {
+    $('#pictureBtn').on('click', () => {
+      $('#picInput').trigger('click')
+    })
+  })
+
+  function checkFile(el) {
+    let fileFormat = getExtension($(el).val()).toLowerCase();
+    var url = URL.createObjectURL(el.files[0]);
+    switch (fileFormat) {
+      case "jpeg":
+      case "jpg":
+      case "png":
+      case "gif":
+      case "bmp":
+        $('#ProfileImage img').attr('src', url)
+        break;
+      default:
+        alert('Wrong format! Please select pictures only.')
+        $(el).val("")
+        $('#picture1').attr('src', "/uploads/default.jpg")
+        break;
+    }
+  }
+  function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
+  }
+
+
+</script>

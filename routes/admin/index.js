@@ -10,65 +10,91 @@ const { userAuth } = require('../../helpers/authUser');
 
 // Set layout
 router.all('/*', userAuth, (req, res, next) => {
-	req.app.locals.layout = 'admin';
-	next();
+    req.app.locals.layout = 'admin';
+    next();
 });
 
 // Index route
 router.get('/', (req, res) => {
-	res.render('admin');
+    res.render('admin');
 });
 
 // Generates fake post
 router.post('/gen_fake_post', (req, res) => {
-	Post.find().sort({ postId: -1 }).limit(1).then((sr) => {
-		sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
+    Post.find().sort({ postId: -1 }).limit(1).then((sr) => {
+        sr[0] != undefined ? (global.postId = sr[0].postId) : (global.postId = 0);
 
-		for (let i = 0; i < req.body.amount; i++) {
-			let post = new Post();
-			post.user = req.user.id;
-			post.title = faker.name.title();
-			post.file = 'default.jpg';
-			post.body = faker.lorem.paragraph(20);
-			post.allowComments = true;
-			post.status = 'public';
-			post.postId = ++global.postId;
-			post.date = Date.now();
-			Category.find({}).then((all) => {
-				let length = all.length;
-				let randomCategory = Math.floor(Math.random() * Math.floor(length));
-				post.category = all[randomCategory];
-				post.save();
-			});
-		}
-		res.render('admin', { added: true });
-	});
+        for (let i = 0; i < req.body.amount; i++) {
+            let post = new Post();
+            post.user = req.user.id;
+            post.title = faker.name.title();
+            post.file = 'default.jpg';
+            post.body = faker.lorem.paragraph(20);
+            post.allowComments = true;
+            post.status = 'public';
+            post.postId = ++global.postId;
+            post.date = Date.now();
+            Category.find({}).then((all) => {
+                let length = all.length;
+                let randomCategory = Math.floor(Math.random() * Math.floor(length));
+                post.category = all[randomCategory];
+                post.save();
+            });
+        }
+        res.render('admin', { added: true });
+    });
 });
 
 // Delete all posts
 router.post('/removeAllPost', (req, res) => {
-	Post.deleteMany({})
-		.then((post) => {
-			if (post.file != 'default.jpg') {
-				console.log(post.file);
-				// fs.unlink(uploadDir + post.file, (err) => {
-				//     if (err) throw err;
-				// });
-			}
-			res.render('admin', { deleted: true });
-		})
-		.catch((err) => {
-			console.log(err.message);
-		});
+    Post.deleteMany({})
+        .then((post) => {
+            if (post.file != 'default.jpg') {
+                console.log(post.file);
+                // fs.unlink(uploadDir + post.file, (err) => {
+                //     if (err) throw err;
+                // });
+            }
+            res.render('admin', { deleted: true });
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
 });
 
 // Profile router
 router.get('/profile', (req, res) => {
-	User.findOne({ _id: req.user._id })
-		.then((user) => {
-			res.render('admin/profile',user);
-		})
-		.catch((err) => res.send(err));
+    User.findOne({ _id: req.user._id })
+        .then((user) => {
+            res.render('admin/profile', user);
+        })
+        .catch((err) => res.send(err));
+});
+
+// Change Profile router
+router.put('/profile', (req, res) => {
+    if (req.files) {
+        let file = req.files.picture;
+        filename = Date.now() + '-' + file.name;
+        file.mv('./public/uploads/profile/' + filename, (err) => {
+            if (err) throw err;
+        });
+    } else {
+        filename = req.user.picture;
+    }
+    User.findOneAndUpdate({ _id: req.user._id }, {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            picture: filename
+        }, { new: true })
+        .then(() => {
+            req.flash('success_alert', 'Profile info has been changed.');
+            res.redirect('/admin/profile');
+        })
+        .catch((err) => {
+            res.send(err);
+        });
 });
 
 module.exports = router;

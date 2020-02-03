@@ -24,6 +24,10 @@ const userSchema = new Schema({
     type: {
         type: Schema.Types.ObjectId,
         ref: 'UserType'
+    },
+    picture: {
+        type: String,
+        default: 'default.jpg'
     }
 });
 

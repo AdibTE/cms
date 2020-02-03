@@ -16,7 +16,8 @@ router.post('/', (req, res) => {
     Post.findOne({ _id: req.body.id }).then((_fpost) => {
         const newComment = new Comment({
             user: req.user.id,
-            body: req.body.body
+            body: req.body.body,
+            date: Date.now()
         });
         _fpost.comments.push(newComment);
         _fpost
