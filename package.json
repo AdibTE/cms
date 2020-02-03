@@ -24,7 +24,7 @@
         "method-override": "^3.0.0",
         "moment": "^2.24.0",
         "mongodb": "^3.5.2",
-        "mongoose": "^5.8.10",
+        "mongoose": "^5.8.11",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "sweetalert": "^2.1.2"
