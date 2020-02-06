@@ -43,36 +43,47 @@
         </thead>
         <tbody>
           {{#each posts}}
-          <tr>
-            <td width="5%">
-              {{postId}}
-            </td>
-            <td width="10%">
-              <img class="img-thumbnail" style="width: 75px;height:75px" src="/uploads/{{file}}" alt="" />
-            </td>
-            <td>
-              {{title}}
-            </td>
-            <td width="5%">
-              {{status}}
-            </td>
-            <td width="5%">
-              {{category.name}}
-            </td>
-            <td width="5%">
-              {{user.email}}
-            </td>
-            <td width="10%">
-              <a href="/admin/posts/edit/{{id}}">
-                <i class="fa fa-edit"></i>
-              </a>
-              <form action="/admin/posts/{{id}}?_method=DELETE" method="POST" style="all: unset;">
-                <button type="submit" style="all: unset;cursor:pointer">
-                  <i class="fa fa-trash text-danger"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
+            <tr>
+              <td width="5%">
+                {{postId}}
+              </td>
+              <td width="10%">
+                <img
+                  class="img-thumbnail"
+                  style="width: 75px;height:75px"
+                  src="/uploads/{{file}}"
+                  alt=""
+                />
+              </td>
+              <td>
+                <a href="/post/{{postId}}" target="_blank">
+                  {{title}}
+                </a>
+              </td>
+              <td width="5%">
+                {{status}}
+              </td>
+              <td width="5%">
+                {{category.name}}
+              </td>
+              <td width="5%">
+                {{user.email}}
+              </td>
+              <td width="10%">
+                <a href="/admin/posts/edit/{{id}}">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <form
+                  action="/admin/posts/{{id}}?_method=DELETE"
+                  method="POST"
+                  style="all: unset;"
+                >
+                  <button type="submit" style="all: unset;cursor:pointer">
+                    <i class="fa fa-trash text-danger"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
           {{/each}}
         </tbody>
       </table>

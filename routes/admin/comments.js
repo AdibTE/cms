@@ -4,6 +4,7 @@ const Category = require('../../models/Admin/Category');
 const User = require('../../models/Admin/User');
 const Post = require('../../models/Admin/Post');
 const Comment = require('../../models/Admin/Comment');
+const { isOwner } = require('../../helpers/authUser');
 
 // Set layout
 router.all('/*', (req, res, next) => {
@@ -35,8 +36,30 @@ router.post('/', (req, res) => {
 
 // Get all comments
 router.get('/', (req, res) => {
-    Comment.find({}).sort({ date: -1 }).populate('user').then((_fcomments) => {
-        res.render('admin/comments', { comments: _fcomments });
+    let cond = req.user.type.type == 0 ? {} : { user: req.user.id };
+    Post.find(cond)
+        .sort({ date: -1 })
+        .populate('category')
+        .populate('user')
+        .then((posts) => {
+            res.render('admin/comments/main', { posts: posts });
+        })
+        .catch((err) => {
+            res.send(err.message);
+        });
+});
+
+// Get Post Comments
+router.get('/:id', isOwner, (req, res) => {
+    Post.findOne({ _id: req.params.id }).populate({ path: 'comments', populate: 'user' }).then((post) => {
+        res.render('admin/comments', { comments: post.comments, postId: req.params.id });
+    });
+});
+
+// Get post comments count
+router.get('/getCount/:id', (req, res) => {
+    Post.findOne({ _id: req.params.id }).populate('comments').then((post) => {
+        res.send({ count: post.comments.length });
     });
 });
 
@@ -52,8 +75,8 @@ router.patch('/:id', (req, res) => {
 });
 
 // Delete comment
-router.delete('/:id', (req, res) => {
-    Comment.deleteOne({ _id: req.params.id }).then((comment) => {
+router.delete('/:cid/:id', isOwner, (req, res) => {
+    Comment.deleteOne({ _id: req.params.cid }).then((comment) => {
         req.flash('success_message', 'Comment Deleted successfuly');
         res.redirect('/admin/comments');
     });

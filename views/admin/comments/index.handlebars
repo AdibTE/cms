@@ -7,16 +7,19 @@
                 Dashboard
             </a>
         </li>
-        <li class="breadcrumb-item active">
+        <li class="breadcrumb-item">
             <a href="/admin/comments">
                 Comments
             </a>
+        </li>
+        <li class="breadcrumb-item active">
+            Post Comments
         </li>
     </ol>
     <div class="row">
         <div class="col-md-12">
             <h1>
-                Comments
+                Post Comments
             </h1>
         </div>
         <div class="col-md-12 form-group" style="margin-top: 50px;">
@@ -44,7 +47,8 @@
                             </div>
                         </td>
                         <td>
-                            <form action="/admin/comments/{{id}}?_method=Delete" method="POST" style="all: unset;">
+                            <form action="/admin/comments/{{id}}/{{../postId}}?_method=Delete" method="POST"
+                                style="all: unset;">
                                 <button type="submit" style="all: unset;cursor:pointer">
                                     <i class="fa fa-times fa-lg text-danger" title="Delete"></i>
                                 </button>

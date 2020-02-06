@@ -9,44 +9,105 @@
   </ol>
   <div class="row">
     <div class="col-12">
-      <h1>
+      {{!-- <h1>
         Welcome to your CMS
-      </h1>
-      <form action="/admin/gen_fake_post" method="POST">
-        <div class="form-group row">
-          <div class="col-md-8">
+      </h1> --}}
+      <div class="form-group row">
+        <div class="col-md-8">
+          <form action="/admin/gen_fake_post" method="POST">
             <input required name="amount" type="number" class="form-control"
               placeholder="enter number of posts to inject" />
-          </div>
-          <div class="col-md-4">
-            <button class="btn btn-block btn-secondary">
-              Create
-            </button>
-          </div>
         </div>
-      </form>
-      <form action="/admin/removeAllPost" method="POST">
-        <div class="form-group row">
-          <div class="col-md-2">
+        <div class="col-md-2">
+          <button class="btn btn-block btn-secondary">
+            Create
+          </button>
+          </form>
+        </div>
+        <div class="col-md-2">
+          <form action="/admin/removeAllPost" method="POST">
             <button class="btn btn-block btn-danger">
               Delete
             </button>
-          </div>
+          </form>
         </div>
-      </form>
-
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+      <div class="col-md-4">
+        <canvas id="pieChart" width="400" height="400"></canvas>
+      </div>
+      <div class="col-md-4">
+        <small class="text-muted">Last One:</small><br>
+        <a href="/post/{{lastPost.postId}}" target="_blank">{{lastPost.title}}</a>
+        <img src="/uploads/{{lastPost.file}}" style="width:100%;height:150px;border-radius:5px;object-fit:cover;margin:10px auto">
+        <p style="height: 100px;overflow:hidden">{{lastPost.body}}</p>
+      </div>
+      </div>
     </div>
   </div>
 </div>
-
 <script>
-  { { #if added} }
-  swal("Done!", "Posts Added succesfuly", "success")
-  {
-    {
-      /if}}
-
-      { { #if deleted} }
-      swal("Done!", "Posts Deleted succesfuly", "success")
-      { { /if}}
+  var ctx = document.getElementById('myChart')
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Posts', 'Users', 'Comments', 'Categories'],
+      datasets: [{
+        label: 'Chart of Numbers',
+        data: [{{ postCount }}, {{ userCount }},{{ comCount }}, {{ catCount }}],
+  backgroundColor: [
+    'rgba(255, 99, 132, 0.2)',
+    'rgba(54, 162, 235, 0.2)',
+    'rgba(255, 206, 86, 0.2)',
+    'rgba(75, 192, 192, 0.2)'
+  ],
+    borderColor: [
+      'rgba(255, 99, 132, 1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 206, 86, 1)',
+      'rgba(75, 192, 192, 1)'
+    ],
+      borderWidth: 3
+  }]
+    },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+  });
+  var pieChart = document.getElementById('pieChart');
+  var myPieChart = new Chart(pieChart, {
+    type: 'pie',
+    data: {
+      labels: [
+        'All Posts',
+        'My Posts',
+      ],
+      datasets: [{
+        data: [{{postCount}}, {{userPostCount}}],
+        backgroundColor: [
+        'rgb(54, 162, 235)',
+        'rgb(255, 99, 132)',
+      ],
+      }],
+      
+    },
+    options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
 </script>

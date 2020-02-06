@@ -54,7 +54,10 @@ router.get('/post/:id', (req, res) => {
         })
         .populate('user')
         .then((post) => {
-            let postOwner = req.user && req.user._id == post.user.id ? true : false;
+            let postOwner = false;
+            if (req.user) {
+                postOwner = (req.user && req.user._id == post.user.id) || req.user.type.type == 0 ? true : false;
+            }
             Category.find({}).then((cat) => {
                 res.render('home/post', { post: post, cat: cat, postOwner: postOwner });
             });

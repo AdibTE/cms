@@ -132,7 +132,7 @@ router.put('/edit/:id', (req, res) => {
                 });
                 if (post.file != 'default.jpg') {
                     fs.unlink(uploadDir + post.file, (err) => {
-                        if (err) throw err;
+                        if (err) console.log (err);
                     });
                 }
             } else if (post.file != 'default.jpg') {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Admin/Post');
 const Category = require('../../models/Admin/Category');
+const Comment = require('../../models/Admin/Comment');
 const User = require('../../models/Admin/User');
 const faker = require('faker');
 const { uploadDir } = require('../../helpers/uploadHelper');
@@ -16,7 +17,26 @@ router.all('/*', userAuth, (req, res, next) => {
 
 // Index route
 router.get('/', (req, res) => {
-    res.render('admin');
+    Post.find({}).then((posts) => {
+        User.find({}).then((users) => {
+            Category.find({}).then((cats) => {
+                Comment.find({}).then((comments) => {
+                    Post.find({ user: req.user }).then((userposts) => {
+                        Post.findOne({}).sort({ date: -1 }).then((lastPost) => {
+                            res.render('admin', {
+                                postCount: posts.length,
+                                userCount: users.length,
+                                catCount: cats.length,
+                                comCount: comments.length,
+                                userPostCount: userposts.length,
+                                lastPost: lastPost
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 });
 
 // Generates fake post
@@ -41,7 +61,8 @@ router.post('/gen_fake_post', (req, res) => {
                 post.save();
             });
         }
-        res.render('admin', { added: true });
+        req.flash('success_alert', 'Done!');
+        res.redirect('/admin');
     });
 });
 
@@ -55,7 +76,8 @@ router.post('/removeAllPost', (req, res) => {
                 //     if (err) throw err;
                 // });
             }
-            res.render('admin', { deleted: true });
+            req.flash('success_alert', 'Posts Deleted!');
+            res.redirect('/admin');
         })
         .catch((err) => {
             console.log(err.message);

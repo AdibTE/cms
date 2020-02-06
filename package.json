@@ -1,6 +1,6 @@
 {
     "name": "cms",
-    "version": "1.0.0",
+    "version": "1.11.0",
     "description": "cms with node.js",
     "main": "app.js",
     "scripts": {

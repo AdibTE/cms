@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/admin">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active">
+            Comments
+        </li>
+    </ol>
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Comments
+            </h1>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            Post title
+                        </th>
+                        <th width="15%">
+                            Comments count
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each posts}}
+                    <tr>
+                        <td>
+                            <a href="/post/{{postId}}" target="_blank">
+                                {{title}}
+                            </a>
+                        </td>
+                        <td count-id="{{@index}}" class="text-center">
+                            <script>
+                                $(function () {
+                                    console.log('ajax')
+                                    $.ajax({
+                                        url: '/admin/comments/getCount/{{id}}',
+                                        type: 'GET',
+                                        success: function (res) {
+                                            $('[count-id="{{@index}}"]').html(res.count);
+                                            if (res.count == 0) $('[count-id="{{@index}}"]').parent().remove();
+                                        }
+                                    })
+                                })
+                            </script>
+                        </td>
+                        <td width="20%">
+                            <a class="btn btn-secondary btn-block" href="/admin/comments/{{id}}">
+                                View Comments
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
