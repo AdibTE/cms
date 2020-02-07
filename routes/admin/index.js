@@ -17,24 +17,22 @@ router.all('/*', userAuth, (req, res, next) => {
 
 // Index route
 router.get('/', (req, res) => {
-    Post.find({}).then((posts) => {
-        User.find({}).then((users) => {
-            Category.find({}).then((cats) => {
-                Comment.find({}).then((comments) => {
-                    Post.find({ user: req.user }).then((userposts) => {
-                        Post.findOne({}).sort({ date: -1 }).then((lastPost) => {
-                            res.render('admin', {
-                                postCount: posts.length,
-                                userCount: users.length,
-                                catCount: cats.length,
-                                comCount: comments.length,
-                                userPostCount: userposts.length,
-                                lastPost: lastPost
-                            });
-                        });
-                    });
-                });
-            });
+    const promises = [
+        Post.find({}).exec(),
+        User.find({}).exec(),
+        Category.find({}).exec(),
+        Comment.find({}).exec(),
+        Post.find({ user: req.user }).exec(),
+        Post.findOne({}).sort({ date: -1 }).exec()
+    ];
+    Promise.all(promises).then(([posts, users, cats, comments, userposts, lastPost]) => {
+        res.render('admin', {
+            postCount: posts.length,
+            userCount: users.length,
+            catCount: cats.length,
+            comCount: comments.length,
+            userPostCount: userposts.length,
+            lastPost: lastPost
         });
     });
 });
