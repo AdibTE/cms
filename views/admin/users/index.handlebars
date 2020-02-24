@@ -31,7 +31,7 @@
 
                 <tbody class="text-center">
                     {{#each users}}
-                    <form action="/admin/users/edit/{{id}}?_method=PATCH" method="POST" style="all: unset;">
+                    <form action="/admin/users/edit/{{_id}}?_method=PATCH" method="POST" style="all: unset;">
                         <tr>
                             <td>{{_id}}</td>
                             <td>{{email}}</td>

@@ -26,14 +26,14 @@
           </span>
         </a>
         <ul class="sidenav-second-level collapse" id="collapsePosts">
-          {{#if (isAdmin user.type.type)}}
+          {{!-- {{#if (isAdmin user.type.type)}} --}}
           <li>
 
             <a href="/admin/posts">
               All Posts
             </a>
           </li>
-          {{/if}}
+          {{!-- {{/if}} --}}
           <li>
             <a href="/admin/posts/myPosts">
               My Posts
@@ -54,7 +54,7 @@
           </span>
         </a>
       </li>
-      {{#if (isAdmin user.type.type)}}
+      {{!-- {{#if (isAdmin user.type.type)}} --}}
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers"
           data-parent="#exampleAccordion">
@@ -76,7 +76,7 @@
           </li>
         </ul>
       </li>
-      {{/if}}
+      {{!-- {{/if}} --}}
       <li class="nav-item">
         <a class="nav-link" href="/admin/comments">
           <i class="fa fa-fw fa-comment"></i>

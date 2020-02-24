@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     User.find({}).lean()
         .populate('type')
         .then((users) => {
-            UserType.find({}).then((userTypes) => {
+            UserType.find({}).lean().then((userTypes) => {
                 res.render('admin/users', { users: users, userTypes: userTypes });
             });
         })
