@@ -16,6 +16,7 @@ router.all('/*', userAuth, (req, res, next) => {
 // All Posts GET route
 router.get('/', isAdmin, (req, res) => {
     Post.find({})
+        .lean()
         .sort({ date: -1 })
         .populate('category')
         .populate('user')
@@ -30,6 +31,7 @@ router.get('/', isAdmin, (req, res) => {
 // user Posts GET route
 router.get('/myPosts', (req, res) => {
     Post.find({ user: req.user.id })
+        .lean()
         .sort({ date: -1 })
         .populate('category')
         .populate('user')
@@ -43,7 +45,7 @@ router.get('/myPosts', (req, res) => {
 
 // Create GET route
 router.get('/create', (req, res) => {
-    Category.find({}).then((cat) => {
+    Category.find({}).lean().then((cat) => {
         res.render('admin/posts/create', { cat: cat });
     });
 });
@@ -99,6 +101,7 @@ router.post('/create', (req, res) => {
 // Edit GET route
 router.get('/edit/:id', isOwner, (req, res, next) => {
     Post.findOne({ _id: req.params.id })
+        .lean()
         .populate('category')
         .then((post) => {
             Category.find({}).then((cat) => {
@@ -132,7 +135,7 @@ router.put('/edit/:id', (req, res) => {
                 });
                 if (post.file != 'default.jpg') {
                     fs.unlink(uploadDir + post.file, (err) => {
-                        if (err) console.log (err);
+                        if (err) console.log(err);
                     });
                 }
             } else if (post.file != 'default.jpg') {

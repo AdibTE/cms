@@ -12,7 +12,7 @@ router.all('/*', userAuth, (req, res, next) => {
 
 // Index route
 router.get('/', (req, res) => {
-    Category.find({}).then((cat) => {
+    Category.find({}).lean().then((cat) => {
         res.render('admin/categories', { category: cat });
     });
 });

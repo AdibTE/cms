@@ -18,12 +18,12 @@ router.all('/*', userAuth, (req, res, next) => {
 // Index route
 router.get('/', (req, res) => {
     const promises = [
-        Post.find({}).exec(),
-        User.find({}).exec(),
-        Category.find({}).exec(),
-        Comment.find({}).exec(),
-        Post.find({ user: req.user }).exec(),
-        Post.findOne({}).sort({ date: -1 }).exec()
+        Post.find({}).lean().exec(),
+        User.find({}).lean().exec(),
+        Category.find({}).lean().exec(),
+        Comment.find({}).lean().exec(),
+        Post.find({ user: req.user }).lean().exec(),
+        Post.findOne({}).lean().sort({ date: -1 }).exec()
     ];
     Promise.all(promises).then(([posts, users, cats, comments, userposts, lastPost]) => {
         res.render('admin', {
@@ -84,7 +84,7 @@ router.post('/removeAllPost', (req, res) => {
 
 // Profile router
 router.get('/profile', (req, res) => {
-    User.findOne({ _id: req.user._id })
+    User.findOne({ _id: req.user._id }).lean()
         .then((user) => {
             res.render('admin/profile', user);
         })

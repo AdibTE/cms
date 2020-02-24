@@ -39,6 +39,7 @@ router.get('/', (req, res) => {
     let cond = req.user.type.type == 0 ? {} : { user: req.user.id };
     Post.find(cond)
         .sort({ date: -1 })
+        .lean()
         .populate('category')
         .populate('user')
         .then((posts) => {
@@ -51,14 +52,14 @@ router.get('/', (req, res) => {
 
 // Get Post Comments
 router.get('/:id', isOwner, (req, res) => {
-    Post.findOne({ _id: req.params.id }).populate({ path: 'comments', populate: 'user' }).then((post) => {
+    Post.findOne({ _id: req.params.id }).lean().populate({ path: 'comments', populate: 'user' }).then((post) => {
         res.render('admin/comments', { comments: post.comments, postId: req.params.id });
     });
 });
 
 // Get post comments count
 router.get('/getCount/:id', (req, res) => {
-    Post.findOne({ _id: req.params.id }).populate('comments').then((post) => {
+    Post.findOne({ _id: req.params.id }).lean().populate('comments').then((post) => {
         res.send({ count: post.comments.length });
     });
 });

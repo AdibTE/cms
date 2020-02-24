@@ -12,7 +12,7 @@ router.all('/*', userAuth, isAdmin, (req, res, next) => {
 
 // User Get route
 router.get('/', (req, res) => {
-    User.find({})
+    User.find({}).lean()
         .populate('type')
         .then((users) => {
             UserType.find({}).then((userTypes) => {
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 
 // User Types get route
 router.get('/types', (req, res) => {
-    UserType.find({})
+    UserType.find({}).lean()
         .then((userTypes) => {
             res.render('admin/users/types', { userTypes: userTypes });
         })
