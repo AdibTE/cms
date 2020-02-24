@@ -70,11 +70,11 @@
                 {{user.email}}
               </td>
               <td width="10%">
-                <a href="/admin/posts/edit/{{id}}">
+                <a href="/admin/posts/edit/{{_id}}">
                   <i class="fa fa-edit"></i>
                 </a>
                 <form
-                  action="/admin/posts/{{id}}?_method=DELETE"
+                  action="/admin/posts/{{_id}}?_method=DELETE"
                   method="POST"
                   style="all: unset;"
                 >

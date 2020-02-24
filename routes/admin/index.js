@@ -18,11 +18,11 @@ router.all('/*', userAuth, (req, res, next) => {
 // Index route
 router.get('/', (req, res) => {
     const promises = [
-        Post.find({}).lean().exec(),
-        User.find({}).lean().exec(),
-        Category.find({}).lean().exec(),
-        Comment.find({}).lean().exec(),
-        Post.find({ user: req.user }).lean().exec(),
+        Post.find({}).exec(),
+        User.find({}).exec(),
+        Category.find({}).exec(),
+        Comment.find({}).exec(),
+        Post.find({ user: req.user }).exec(),
         Post.findOne({}).lean().sort({ date: -1 }).exec()
     ];
     Promise.all(promises).then(([posts, users, cats, comments, userposts, lastPost]) => {

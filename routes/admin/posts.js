@@ -104,7 +104,7 @@ router.get('/edit/:id', isOwner, (req, res, next) => {
         .lean()
         .populate('category')
         .then((post) => {
-            Category.find({}).then((cat) => {
+            Category.find({}).lean().then((cat) => {
                 res.render('admin/posts/edit', { post: post, cat: cat });
             });
         })

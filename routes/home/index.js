@@ -22,13 +22,14 @@ router.get('/', (req, res) => {
     Post.find({})
         .sort({ date: -1 })
         .limit(limit)
+        .lean()
         .skip(page * limit)
         .populate('user')
         .then((posts) => {
             // get all posts length
-            Post.find({}).then((allposts) => {
+            Post.find({}).lean().then((allposts) => {
                 let postslength = allposts.length;
-                Category.find({}).then((cat) => {
+                Category.find({}).lean().then((cat) => {
                     res.render('home/index', {
                         posts: posts,
                         cat: cat,
@@ -45,7 +46,7 @@ router.get('/', (req, res) => {
 
 // Get Single Post
 router.get('/post/:id', (req, res) => {
-    Post.findOne({ postId: req.params.id })
+    Post.findOne({ postId: req.params.id }).lean()
         .populate({
             path: 'comments',
             populate: {
@@ -58,7 +59,7 @@ router.get('/post/:id', (req, res) => {
             if (req.user) {
                 postOwner = (req.user && req.user._id == post.user.id) || req.user.type.type == 0 ? true : false;
             }
-            Category.find({}).then((cat) => {
+            Category.find({}).lean().then((cat) => {
                 res.render('home/post', { post: post, cat: cat, postOwner: postOwner });
             });
         });
@@ -68,13 +69,13 @@ router.get('/post/:id', (req, res) => {
 router.get('/category/:name', (req, res) => {
     let limit = parseInt(req.query.limit) || 3;
     let page = parseInt(req.query.page) || 0;
-    Category.findOne({ name: req.params.name })
+    Category.findOne({ name: req.params.name }).lean()
         .then((cat) => {
             // get all posts length
-            Post.find({ category: cat._id }).then((posts) => {
+            Post.find({ category: cat._id }).lean().then((posts) => {
                 let allposts = posts.length;
-                Post.find({ category: cat._id }).populate('user').limit(limit).skip(page * limit).then((posts) => {
-                    Category.find({}).then((allcat) => {
+                Post.find({ category: cat._id }).populate('user').lean().limit(limit).skip(page * limit).then((posts) => {
+                    Category.find({}).lean().then((allcat) => {
                         res.render('home/index', {
                             posts: posts,
                             cat: allcat,
