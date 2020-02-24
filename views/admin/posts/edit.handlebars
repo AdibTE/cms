@@ -26,15 +26,9 @@
             <label for="#category">
               Category
             </label>
-            <script>
-              $(function () {
-                console.log('')
-                $('[name="category"]').val('{{post.category.id}}')
-              })
-            </script>
             <select name="category" id="category" class="form-control">
               {{#each cat}}
-              <option value="{{id}}">{{name}}</option>
+              <option value="{{_id}}">{{name}}</option>
               {{/each}}
             </select>
           </div>
@@ -102,3 +96,10 @@
     </div>
   </div>
 </div>
+
+<script>
+
+$(function(){
+  $('#category').val('{{post.category._id}}')
+  alert('{{post.category._id}}')
+})
